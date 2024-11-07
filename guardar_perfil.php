@@ -4,7 +4,7 @@ session_start();
 
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    header('Location: login.html');
+    header('Location: login.php');
     exit();
 }
 
@@ -29,13 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt = $mysqli->prepare($sql)) {
         $stmt->bind_param("ssssss", $email, $nombre, $apellido, $fecha_nacimiento, $direccion, $telefono);
         if ($stmt->execute()) {
-            header("Location: perfil.html?status=success&message=Perfil guardado exitosamente.");
+            header("Location: perfil.php?status=success&message=Perfil guardado exitosamente.");
         } else {
-            header("Location: perfil.html?status=danger&message=Error al guardar el perfil: " . $stmt->error);
+            header("Location: perfil.php?status=danger&message=Error al guardar el perfil: " . $stmt->error);
         }
         $stmt->close();
     } else {
-        header("Location: perfil.html?status=danger&message=Error en la preparación de la consulta SQL: " . $mysqli->error);
+        header("Location: perfil.php?status=danger&message=Error en la preparación de la consulta SQL: " . $mysqli->error);
     }
 }
 

@@ -17,6 +17,7 @@
     </style>
 </head>
 <body>
+    <?php include 'menu_out.php'; ?>
     <div class="container form-container">
         <h2 class="mb-4">Crear Nuevo Usuario</h2>
         <form method="POST" action="create_user.php">
@@ -29,6 +30,7 @@
                 <input type="password" id="password" name="password" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Crear Usuario</button>
+            <a href="login.php" class="btn btn-secondary">Iniciar Sesión</a>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
