@@ -1,17 +1,12 @@
-<!-- menu.php -->
-
 <?php
 // Iniciar sesión al principio del archivo
-// En menu.php, antes de llamar session_start()
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-
-
 // Verificar si el usuario está logueado
-$isLoggedIn = isset($_SESSION['usuario']);
-$usuarioNombre = $isLoggedIn ? $_SESSION['usuario']['nombre'] : '';
+$isLoggedIn = isset($_SESSION['email']); // Verificamos que 'email' exista en la sesión
+$usuarioEmail = $isLoggedIn ? $_SESSION['email'] : ''; // Si está logueado, obtenemos el email
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,7 +34,6 @@ $usuarioNombre = $isLoggedIn ? $_SESSION['usuario']['nombre'] : '';
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="tienda.php">Ver Tienda</a>
-                    <!-- <a class="dropdown-item" href="#">Crear Productos</a> -->
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -59,14 +53,22 @@ $usuarioNombre = $isLoggedIn ? $_SESSION['usuario']['nombre'] : '';
             </li>
         </ul>
 
-        <!-- Usuario y búsqueda -->
-        <div class="d-flex align-items-center">
-            <p class="alert alert-warning mb-0 mr-3"> Usuario: <?php echo htmlspecialchars($_SESSION['email']); ?>!</p>
-            <form class="form-inline my-2 my-lg-0 mr-3">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+    </div>
+    <!-- Usuario y búsqueda -->
+    <div class="d-flex align-items-center">
+        <?php if ($isLoggedIn): ?>
+            <p class="alert alert-warning mb-0 mr-3"> Usuario: <?php echo htmlspecialchars($usuarioEmail); ?>!</p>
+        <?php else: ?>
+            <p class="alert alert-warning mb-0 mr-3"> No has iniciado sesión.</p>
+        <?php endif; ?>
+        <form class="form-inline my-2 my-lg-0 mr-3">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <?php if ($isLoggedIn): ?>
             <a class="btn btn-warning" href="logout.php" role="button">Cerrar sesión</a>
-        </div>
+        <?php else: ?>
+            <a class="btn btn-warning" href="login.php" role="button">Iniciar sesión</a>
+        <?php endif; ?>
     </div>
 </nav>
