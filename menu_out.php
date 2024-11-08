@@ -10,19 +10,19 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Productos
+                    Tienda
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="ver_stock.php">Ver Stock</a>
-                    <a class="dropdown-item" href="agregar_producto.html">Crear Productos</a>
+                    <a class="dropdown-item" href="tienda.php">Ver Tienda</a>
+                    <a class="dropdown-item" href="#">Crear Productos</a>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="cart.php">Carrito</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="ver_facturas.php">Facturas</a>
-            </li>
+            </li> -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Perfil
@@ -33,7 +33,8 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="logout.php">Cerrar sesión</a>
+                <a class="btn btn-warning" href="index.php">Crear Cuenta</a>
+                <a class="btn btn-warning" href="login.php">Iniciar Sesión</a>
             </li>
         </ul>
     </div>
