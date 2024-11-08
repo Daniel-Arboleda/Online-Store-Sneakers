@@ -1,6 +1,6 @@
 <?php
-require 'conexion.php';
 session_start();
+require 'conexion.php';
 
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
@@ -19,8 +19,8 @@ if ($stmt = $mysqli->prepare($sql)) {
 } else {
     die("Error en la preparación de la consulta SQL: " . $mysqli->error);
 }
+$mysqli->close();  // Cerrar la conexión
 
-$mysqli->close();
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ $mysqli->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de Compras - StoreThays</title>
+    <title>Carrito de Compras Sneakers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>

@@ -1,52 +1,81 @@
 <?php
-require 'conexion.php';
 session_start();
 
-// Verificar si el usuario está autenticado
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+// Verificar que el usuario esté autenticado
+if (!isset($_SESSION['email'])) {
     header('Location: login.php');
     exit();
 }
 
-// Verificar si el ID de usuario está en la sesión
-if (!isset($_SESSION['user_id'])) {
-    die("ID de usuario no disponible en la sesión.");
+// Incluir la conexión a la base de datos
+require 'conexion.php';
+
+// Obtener los datos del producto y la cantidad seleccionada
+$productId = isset($_GET['id']) ? $_GET['id'] : null;
+$quantity = isset($_GET['cantidad']) ? $_GET['cantidad'] : 1;
+
+// Verificar que los datos son válidos
+if (!$productId || !is_numeric($quantity) || $quantity <= 0) {
+    header('Location: tienda.php');
+    exit();
 }
 
-$usuario_id = $_SESSION['user_id']; // ID de usuario desde la sesión
+// Consultar la cantidad disponible en stock para el producto
+$sql = "SELECT cantidad FROM productos WHERE id = ?";
+$stmt = $mysqli->prepare($sql);
+$stmt->bind_param('i', $productId);
+$stmt->execute();
+$result = $stmt->get_result();
 
-// Verificar si se ha enviado un ID de producto
-if (isset($_POST['producto_id'])) {
-    $producto_id = intval($_POST['producto_id']);
+if ($result->num_rows > 0) {
+    $producto = $result->fetch_assoc();
+    $stockDisponible = $producto['cantidad'];
 
-    // Consultar el producto
-    $sql = "SELECT nombre, descripcion, precio, cantidad, imagen FROM productos WHERE id = ?";
-    if ($stmt = $mysqli->prepare($sql)) {
-        $stmt->bind_param("i", $producto_id);
-        $stmt->execute();
-        $stmt->bind_result($nombre, $descripcion, $precio, $cantidad, $imagen);
-        $stmt->fetch();
-        $stmt->close();
-    } else {
-        die("Error en la preparación de la consulta SQL: " . $mysqli->error);
+    // Verificar si la cantidad seleccionada excede el stock
+    if ($quantity > $stockDisponible) {
+        echo "<script>alert('No puedes agregar más de lo que hay en el stock disponible.');</script>";
+        header('Location: tienda.php');
+        exit();
     }
 
-    // Agregar el producto al carrito
-    $sql = "INSERT INTO carrito (usuario_id, producto_id, nombre, descripcion, precio, cantidad, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    if ($stmt = $mysqli->prepare($sql)) {
-        $stmt->bind_param("iississ", $usuario_id, $producto_id, $nombre, $descripcion, $precio, $cantidad, $imagen);
-        if ($stmt->execute()) {
-            header('Location: cart.php'); // Redirigir a la página del carrito
+    // Verificar si el producto ya está en el carrito
+    $userEmail = $_SESSION['email'];
+    $sqlCarrito = "SELECT * FROM carrito WHERE usuario_email = ? AND producto_id = ?";
+    $stmtCarrito = $mysqli->prepare($sqlCarrito);
+    $stmtCarrito->bind_param('si', $userEmail, $productId);
+    $stmtCarrito->execute();
+    $resultadoCarrito = $stmtCarrito->get_result();
+
+    if ($resultadoCarrito->num_rows > 0) {
+        // Si el producto ya está en el carrito, solo actualizar la cantidad
+        $carrito = $resultadoCarrito->fetch_assoc();
+        $nuevaCantidad = $carrito['cantidad'] + $quantity;
+
+        // Verificar que la nueva cantidad no exceda el stock
+        if ($nuevaCantidad > $stockDisponible) {
+            echo "<script>alert('No puedes agregar más productos de los que hay en el stock disponible.');</script>";
+            header('Location: tienda.php');
             exit();
-        } else {
-            die("Error al agregar el producto al carrito: " . $stmt->error);
         }
-        $stmt->close();
+
+        // Actualizar el carrito con la nueva cantidad
+        $sqlUpdate = "UPDATE carrito SET cantidad = ? WHERE id = ?";
+        $stmtUpdate = $mysqli->prepare($sqlUpdate);
+        $stmtUpdate->bind_param('ii', $nuevaCantidad, $carrito['id']);
+        $stmtUpdate->execute();
     } else {
-        die("Error en la preparación de la consulta SQL: " . $mysqli->error);
+        // Si el producto no está en el carrito, agregarlo
+        $sqlInsert = "INSERT INTO carrito (usuario_email, producto_id, cantidad) VALUES (?, ?, ?)";
+        $stmtInsert = $mysqli->prepare($sqlInsert);
+        $stmtInsert->bind_param('sii', $userEmail, $productId, $quantity);
+        $stmtInsert->execute();
     }
+
+    // Redirigir a la tienda o carrito después de añadir el producto
+    header('Location: tienda.php');
 } else {
-    die("ID de producto no especificado.");
+    echo "<script>alert('El producto no existe o ha sido eliminado.');</script>";
+    header('Location: tienda.php');
 }
 
 $mysqli->close();
