@@ -15,7 +15,7 @@ $usuario_id = $_SESSION['user_id']; // Asegúrate de usar el ID de usuario corre
 
 // Consultar los productos en el carrito del usuario
 $sql = "
-    SELECT ci.id AS item_id, p.nombre, p.descripcion, p.precio, ci.cantidad, p.imagen
+    SELECT ci.id AS item_id, p.nombre, p.descripcion, p.precio, ci.cantidad, p.imagen, p.id AS producto_id
     FROM carrito c
     INNER JOIN carrito_item ci ON c.id = ci.carrito_id
     INNER JOIN productos p ON ci.producto_id = p.id
@@ -41,6 +41,9 @@ foreach ($productos_carrito as $producto) {
 }
 
 // Verificar si se ha enviado un código de descuento
+$total_con_descuento = $total_carrito; // Inicializar con el total sin descuento
+$descuento = 0;
+
 if (isset($_POST['codigo_descuento'])) {
     $codigo_descuento = $_POST['codigo_descuento'];
 
@@ -56,9 +59,27 @@ if (isset($_POST['codigo_descuento'])) {
             $cupon = $result->fetch_assoc();
             $tipo_descuento = $cupon['tipo_descuento'];
             $valor_descuento = $cupon['valor'];
-            
+            $productos_aplicables = $cupon['productos_aplicables']; // productos aplicables (si es relevante)
+
+            // Verificar si el cupón es aplicable a los productos del carrito
+            if (!empty($productos_aplicables)) {
+                $productos_aplicables = explode(',', $productos_aplicables);
+                $aplicable = false;
+
+                foreach ($productos_carrito as $producto) {
+                    if (in_array($producto['producto_id'], $productos_aplicables)) {
+                        $aplicable = true;
+                        break;
+                    }
+                }
+
+                if (!$aplicable) {
+                    echo "Este cupón no es válido para los productos en tu carrito.";
+                    exit();
+                }
+            }
+
             // Calcular el descuento
-            $descuento = 0;
             if ($tipo_descuento === 'porcentaje') {
                 $descuento = ($total_carrito * $valor_descuento) / 100;
             } elseif ($tipo_descuento === 'monto_fijo') {
@@ -67,16 +88,14 @@ if (isset($_POST['codigo_descuento'])) {
 
             // Restar el descuento al total
             $total_con_descuento = $total_carrito - $descuento;
+            echo "¡Descuento Aplicado! Has ahorrado: $".number_format($descuento, 2);
         } else {
             echo "El código de descuento no es válido o ha expirado.";
         }
     } else {
         echo "Error al verificar el código de descuento.";
     }
-} else {
-    // Si no hay descuento, el total es el mismo
-    $total_con_descuento = $total_carrito;
-}
+} 
 
 $mysqli->close();
 ?>
@@ -141,11 +160,13 @@ $mysqli->close();
         </table>
 
         <!-- Formulario de código de descuento -->
-        <div class="form-group">
-            <label for="codigo_descuento">Código de Descuento</label>
-            <input type="text" id="codigo_descuento" name="codigo_descuento" class="form-control" placeholder="Introduce tu código de descuento">
-            <button type="submit" class="btn btn-primary mt-2">Aplicar Descuento</button>
-        </div>
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="codigo_descuento">Código de Descuento</label>
+                <input type="text" id="codigo_descuento" name="codigo_descuento" class="form-control" placeholder="Introduce tu código de descuento">
+                <button type="submit" class="btn btn-primary mt-2">Aplicar Descuento</button>
+            </div>
+        </form>
 
         <!-- Mostrar el total del carrito -->
         <h4>Total: $<?php echo number_format($total_carrito, 2); ?></h4>
@@ -161,19 +182,8 @@ $mysqli->close();
 
         <!-- Botón para pagar -->
         <form action="pagar.php" method="post">
-            <button type="submit" class="btn btn-success">
-                Ir a Pagar
-            </button>
+            <button type="submit" class="btn btn-success mt-3">Proceder al Pago</button>
         </form>
-
-        <!-- Botón Redirigir a la Tienda -->
-        <a href="tienda.php" class="btn btn-secondary btn-block mt-2">
-            <i class="fas fa-store"></i> Ir a la Tienda
-        </a>
     </div>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
