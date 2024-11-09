@@ -21,8 +21,19 @@ private/scripts/script_crear_admin.php
 login_user.php
 
 # Ignorar configuración y scripts sensibles
-config/
-private/
+# Ignorar todo el contenido de estas carpetas excepto el archivo .gitkeep
+config/*
+!config/.gitkeep
+
+private/*
+!private/.gitkeep
+
+uploads/*
+!uploads/.gitkeep
+
+nginx_config/*
+!uploads/.gitkeep
+
 
 
 # Ignorar cachés y datos temporales
