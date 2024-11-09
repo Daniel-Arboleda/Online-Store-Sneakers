@@ -1,5 +1,7 @@
 <?php
-require 'conexion.php';
+// require 'conexion.php';
+require __DIR__ . '/config/conexion.php';
+
 session_start();
 
 // Verificar si el usuario está autenticado

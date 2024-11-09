@@ -1,6 +1,8 @@
 <?php
 
-require 'conexion.php'; // Asegúrate de que 'conexion.php' esté configurado correctamente para usar estas variables
+// Asegúrate de que 'conexion.php' esté configurado correctamente para usar estas variables
+// require 'conexion.php';
+require __DIR__ . '/config/conexion.php';
 
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

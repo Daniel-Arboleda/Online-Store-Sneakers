@@ -1,5 +1,10 @@
+<?php
+
 // `actualizar_cantidad.php`
-require 'conexion.php';
+// require 'conexion.php';
+require __DIR__ . '/config/conexion.php';
+
+
 
 $producto_id = $_POST['producto_id'];
 $cantidad_nueva = $_POST['cantidad'];
@@ -53,3 +58,4 @@ $stmt_stock->close();
 $stmt_carrito->close();
 $mysqli->close();
 header("Location: cart.php");
+?>

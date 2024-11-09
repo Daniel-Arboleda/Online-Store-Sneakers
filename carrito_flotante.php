@@ -2,7 +2,9 @@
 
 <?php
 // Conexión a la base de datos
-require 'conexion.php';
+// require 'conexion.php';
+require __DIR__ . '/config/conexion.php';
+
 
 // Verificar si hay productos en el carrito del usuario
 

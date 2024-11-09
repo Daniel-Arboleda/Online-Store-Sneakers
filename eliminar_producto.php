@@ -1,6 +1,8 @@
 <?php
 session_start();
-require 'conexion.php';
+// require 'conexion.php';
+require __DIR__ . '/config/conexion.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eliminar'])) {
     $producto_id = $_POST['producto_id'];

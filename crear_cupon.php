@@ -8,7 +8,9 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
 }
 
 // Incluir conexión a la base de datos
-require 'conexion.php';
+// require 'conexion.php';
+require __DIR__ . '/config/conexion.php';
+
 
 // Procesar el formulario de creación de cupones
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
