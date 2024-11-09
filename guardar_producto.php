@@ -1,4 +1,6 @@
 <?php
+session_start();
+$email = $_SESSION['email']; // Asegúrate de que el email esté en la sesión
 require 'conexion.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -29,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Comprobar el tamaño del archivo
-    if ($_FILES["imagen"]["size"] > 5000000) { // 5 MB, 2 MB, 500 KB de límite
+    if ($_FILES["imagen"]["size"] > 5000000) { // 5 MB
         echo "Lo siento, tu archivo es demasiado grande.";
         $uploadOk = 0;
     }
@@ -43,25 +45,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Comprobar si $uploadOk es 0 debido a un error
     if ($uploadOk == 0) {
         echo "Lo siento, tu archivo no fue subido.";
-    // Intentar subir el archivo si no hubo errores
     } else {
         if (move_uploaded_file($_FILES["imagen"]["tmp_name"], $target_file)) {
-            // Guardar los datos del producto en la base de datos
-            $sql = "INSERT INTO productos (nombre, descripcion, precio, cantidad, imagen) VALUES (?, ?, ?, ?, ?)";
-            if ($stmt = $mysqli->prepare($sql)) {
-                $stmt->bind_param("ssdss", $nombre, $descripcion, $precio, $cantidad, $target_file);
-                if ($stmt->execute()) {
-                    echo "El producto ha sido creado exitosamente.";
-                    // Redirigir a ver_stock.php después de la creación exitosa
-                    header('Location: ver_stock.php');
-                } else {
-                    echo "Error al guardar el producto en la base de datos: " . $stmt->error;
-                }
+            // Obtener el usuario_id basado en el email
+            $sql_user_id = "SELECT id FROM autenticacion WHERE email = ?";
+            if ($stmt = $mysqli->prepare($sql_user_id)) {
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $stmt->bind_result($usuario_id);
+                $stmt->fetch();
                 $stmt->close();
-            } else {
-                echo "Error en la preparación de la consulta SQL: " . $mysqli->error;
-            }
 
+                // Verificar que se obtuvo el usuario_id
+                if ($usuario_id) {
+                    // Guardar los datos del producto en la base de datos
+                    $sql = "INSERT INTO productos (usuario_id, nombre, descripcion, precio, cantidad, imagen) VALUES (?, ?, ?, ?, ?, ?)";
+                    // En el bind_param, cambiar a tipo de dato correcto: "issdsi"
+                    if ($stmt = $mysqli->prepare($sql)) {
+                        $stmt->bind_param("issdsi", $usuario_id, $nombre, $descripcion, $precio, $cantidad, basename($target_file)); // Usar solo el nombre de archivo
+
+                        if ($stmt->execute()) {
+                            echo "El producto ha sido creado exitosamente.";
+                            // Redirigir a ver_stock.php después de la creación exitosa
+                            header('Location: ver_stock.php');
+                        } else {
+                            echo "Error al guardar el producto en la base de datos: " . $stmt->error;
+                        }
+                        $stmt->close();
+                    } else {
+                        echo "Error en la preparación de la consulta SQL: " . $mysqli->error;
+                    }
+                } else {
+                    echo "No se encontró un usuario con el email proporcionado.";
+                }
+            } else {
+                echo "Error al preparar la consulta para obtener el usuario_id: " . $mysqli->error;
+            }
         } else {
             echo "Error al subir la imagen.";
         }

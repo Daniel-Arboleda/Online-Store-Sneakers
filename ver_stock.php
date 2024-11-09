@@ -1,5 +1,3 @@
-<!-- ver_stock.php -->
-
 <?php
 require 'conexion.php';
 session_start();
@@ -23,7 +21,7 @@ $mysqli->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock de Productos - StoreThays</title>
+    <title>Stock de Productos Sneakers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -40,6 +38,7 @@ $mysqli->close();
                     <th>Precio</th>
                     <th>Cantidad</th>
                     <th>Imagen</th>
+                    <th>Eliminar</th>
                     <th>Acción</th>
                 </tr>
             </thead>
@@ -54,13 +53,28 @@ $mysqli->close();
                             <td><?php echo htmlspecialchars($row['cantidad']); ?></td>
                             <td>
                                 <?php if ($row['imagen']): ?>
-                                    <img src="<?php echo htmlspecialchars($row['imagen']); ?>" alt="Imagen del producto" style="max-width: 100px;">
+                                    <?php
+                                    // Construir la ruta completa de la imagen
+                                    $image_path = 'uploads/' . htmlspecialchars($row['imagen']);
+                                    // Verificar si el archivo existe
+                                    if (file_exists($image_path)): ?>
+                                        <!-- Mostrar la imagen con la ruta correcta -->
+                                        <img src="<?php echo $image_path; ?>" alt="Imagen del producto" style="max-width: 100px;">
+                                    <?php else: ?>
+                                        Imagen no encontrada
+                                    <?php endif; ?>
                                 <?php else: ?>
                                     No disponible
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <form action="agregar_al_carrito.php" method="post">
+                                <form action="tienda.php" method="post">
+                                    <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($row['id']); ?>">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="tienda.php" method="post">
                                     <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($row['id']); ?>">
                                     <button type="submit" class="btn btn-success">Comprar</button>
                                 </form>
