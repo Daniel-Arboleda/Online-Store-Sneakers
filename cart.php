@@ -184,6 +184,10 @@ $mysqli->close();
         <form action="pagar.php" method="post">
             <button type="submit" class="btn btn-success mt-3">Proceder al Pago</button>
         </form>
-    </div>
+        <!-- Botón Redirigir a la Tienda-->
+        <a href="tienda.php" class="btn btn-secondary btn-block mt-2">
+            <i class="fas fa-store"></i> Ir a la Tienda
+        </a>
+</div>
 </body>
 </html>

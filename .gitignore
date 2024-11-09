@@ -11,6 +11,19 @@ Thumbs.db
 # Ignorar logs y archivos de depuración
 *.log
 debug.log
+log.txt
+
+# Ignorar el script para crear el primer administrador
+script_crear_admin.php
+private/scripts/script_crear_admin.php
+
+# Ignorar el archivo de lógica de inicio de sesión
+login_user.php
+
+# Ignorar configuración y scripts sensibles
+config/
+private/
+
 
 # Ignorar cachés y datos temporales
 cache/
