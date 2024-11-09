@@ -15,7 +15,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - StoreThays</title>
+    <title>Perfil Sneakers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -54,12 +54,13 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <input type="text" id="telefono" name="telefono" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <a class="btn btn-warning" href="mostrar_perfil.php" role="button">Ver Perfil</a>
         </form>
 
         <!-- Tabla para mostrar los datos del usuario -->
-        <h3 class="mt-5">Datos del Usuario</h3>
+        <!-- <h3 class="mt-5">Datos del Usuario</h3> -->
         <?php
-        include 'mostrar_perfil.php';
+        // include 'mostrar_perfil.php';
         ?>
     </div>
 

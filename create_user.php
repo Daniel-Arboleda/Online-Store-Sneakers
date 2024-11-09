@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
     // Preparar y ejecutar la consulta SQL para insertar el nuevo usuario
-    $sql = "INSERT INTO validation (email, password) VALUES (?, ?)";
+    $sql = "INSERT INTO autenticacion (email, password) VALUES (?, ?)";
     if ($stmt = $mysqli->prepare($sql)) {
         $stmt->bind_param("ss", $email, $hashed_password);
         if ($stmt->execute()) {

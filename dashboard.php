@@ -1,3 +1,5 @@
+<!-- dashboard.php -->
+
 <?php
 session_start(); // Iniciar la sesión
 // Verificar si el usuario está autenticado
@@ -11,14 +13,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - StoreThays</title>
+    <title>Dashboard Sneakers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
 </head>
 <body>
     <?php include 'menu.php'; ?> <!-- Esto incluye el archivo de menú -->   
     <div class="container">
-        <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['email']); ?>!</h1>
+        <h1>Bienvenido, 
+            <?php echo htmlspecialchars($_SESSION['email']); ?>
+        </h1>
         <p>Contenido protegido.</p>
         <a href="logout.php" class="btn btn-primary">Cerrar sesión</a>
     </div>

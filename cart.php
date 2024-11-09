@@ -1,22 +1,27 @@
 <?php
 session_start(); // Iniciar la sesión
-// Verificar si el usuario está autenticado
 
+// Verificar si el usuario está autenticado
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: login.html'); // Redirigir al formulario de login si no está autenticado
     exit();
 }
+
 // Incluir el archivo de conexión a la base de datos
 require 'conexion.php';
+
 // Obtener el ID del usuario de la sesión
-$usuario_id = $_SESSION['email'];
+$usuario_id = $_SESSION['user_id']; // Asegúrate de usar el ID de usuario correcto aquí
 
+// Consultar los productos en el carrito del usuario
+$sql = "
+    SELECT ci.id AS item_id, p.nombre, p.descripcion, p.precio, ci.cantidad, p.imagen
+    FROM carrito c
+    INNER JOIN carrito_item ci ON c.id = ci.carrito_id
+    INNER JOIN productos p ON ci.producto_id = p.id
+    WHERE c.usuario_id = ?
+";
 
-
-
-
-// Consultar los productos en el carrito
-$sql = "SELECT id, nombre, descripcion, precio, cantidad, imagen FROM carrito WHERE usuario_id = ?";
 if ($stmt = $mysqli->prepare($sql)) {
     $stmt->bind_param("i", $usuario_id);
     $stmt->execute();
@@ -25,14 +30,16 @@ if ($stmt = $mysqli->prepare($sql)) {
 } else {
     die("Error en la preparación de la consulta SQL: " . $mysqli->error);
 }
+
 $mysqli->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito - StoreThays</title>
+    <title>Carrito de Compras</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -49,13 +56,14 @@ $mysqli->close();
                     <th>Precio</th>
                     <th>Cantidad</th>
                     <th>Imagen</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if ($result->num_rows > 0): ?>
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($row['id']); ?></td>
+                            <td><?php echo htmlspecialchars($row['item_id']); ?></td>
                             <td><?php echo htmlspecialchars($row['nombre']); ?></td>
                             <td><?php echo htmlspecialchars($row['descripcion']); ?></td>
                             <td><?php echo htmlspecialchars($row['precio']); ?></td>
@@ -67,14 +75,22 @@ $mysqli->close();
                                     No disponible
                                 <?php endif; ?>
                             </td>
+                            <td>
+                                <!-- Formulario para eliminar un producto del carrito -->
+                                <form action="eliminar_item.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="item_id" value="<?php echo htmlspecialchars($row['item_id']); ?>">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="6">No hay productos en el carrito.</td>
+                        <td colspan="7">No hay productos en el carrito.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
+
         </table>
         <!-- Botón para pagar -->
         <form action="pagar.php" method="post">

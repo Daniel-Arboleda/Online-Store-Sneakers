@@ -1,0 +1,208 @@
+Producto ID: , Cantidad: 
+Fecha: 2024-11-08 22:37:06
+Usuario: 
+Producto ID: , Cantidad: 
+Producto ID: , Cantidad: 
+Fecha: 2024-11-08 22:52:46
+Usuario: 
+Producto ID: , Cantidad: 
+Producto ID: , Cantidad: 
+Fecha: 2024-11-08 22:52:53
+Usuario: 
+Producto ID: , Cantidad: 
+Producto ID: , Cantidad: 
+Fecha: 2024-11-08 22:52:53
+Usuario: 
+Producto ID: , Cantidad: 
+Fecha: 2024-11-08 22:57:04
+Usuario: 
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 22:57:58
+Usuario: 
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 22:58:00
+Usuario: 
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 22:58:12
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 22:59:02
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 22:59:22
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:00:03
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:00:41
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:00:56
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:08:36
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:08:40
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:08:46
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 3
+Fecha: 2024-11-08 23:08:46
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:09:18
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:09:22
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:10:26
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:10:41
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:12:31
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:12:34
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:12:37
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:14:10
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:16:47
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:18:56
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:19:00
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 3
+Fecha: 2024-11-08 23:19:00
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-08 23:37:30
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 1
+Fecha: 2024-11-08 23:38:24
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 2
+Fecha: 2024-11-08 23:53:24
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 2
+Fecha: 2024-11-08 23:53:26
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 2
+Fecha: 2024-11-08 23:53:36
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 3
+Fecha: 2024-11-09 00:02:04
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 3
+Fecha: 2024-11-09 00:05:28
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-09 00:05:30
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 
+Fecha: 2024-11-09 00:05:45
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 2
+Fecha: 2024-11-09 00:09:37
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 2
+Fecha: 2024-11-09 00:09:42
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 2
+Fecha: 2024-11-09 00:09:47
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 2
+Fecha: 2024-11-09 00:11:42
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 4
+Fecha: 2024-11-09 00:13:15
+Usuario: d0@d.co
+Producto ID: , Cantidad: 4
+Fecha: 2024-11-09 00:13:38
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 4
+Fecha: 2024-11-09 00:13:45
+Usuario: d0@d.co
+Producto ID: 5, Cantidad: 2
+Fecha: 2024-11-09 00:14:30
+Usuario: d0@d.co
+Producto ID: 5, Cantidad: 2
+Fecha: 2024-11-09 00:14:47
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 1
+Fecha: 2024-11-09 00:24:04
+Usuario: d0@d.co
+Producto ID: 5, Cantidad: 3
+Fecha: 2024-11-09 00:24:09
+Usuario: d0@d.co
+Producto ID: 4, Cantidad: 2
+Fecha: 2024-11-09 00:24:37
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 2
+Fecha: 2024-11-09 00:25:05
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 10
+Fecha: 2024-11-09 00:25:44
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 4
+Fecha: 2024-11-09 00:37:58
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 4
+Fecha: 2024-11-09 00:38:22
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 5
+Fecha: 2024-11-09 00:38:41
+Usuario: d0@d.co
+Producto ID: 5, Cantidad: 5
+Fecha: 2024-11-09 00:38:54
+Usuario: d0@d.co
+Producto ID: 5, Cantidad: 5
+Fecha: 2024-11-09 00:39:20
+Usuario: d0@d.co
+Producto ID: 5, Cantidad: 1
+Fecha: 2024-11-09 00:39:36
+Usuario: d0@d.co
+Producto ID: 4, Cantidad: 20
+Fecha: 2024-11-09 00:39:55
+Usuario: d0@d.co
+Producto ID: 4, Cantidad: 5
+Fecha: 2024-11-09 00:47:04
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 1
+Fecha: 2024-11-09 00:47:10
+Usuario: d0@d.co
+Producto ID: 4, Cantidad: 3
+Fecha: 2024-11-09 00:48:23
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 10
+Fecha: 2024-11-09 00:48:55
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 8
+Fecha: 2024-11-09 00:50:42
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 6
+Fecha: 2024-11-09 01:09:29
+Usuario: d0@d.co
+Producto ID: 4, Cantidad: 4
+Fecha: 2024-11-09 01:09:45
+Usuario: d0@d.co
+Producto ID: 4, Cantidad: 5
+Fecha: 2024-11-09 02:20:30
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 5
+Fecha: 2024-11-09 02:20:46
+Usuario: d0@d.co
+Producto ID: 3, Cantidad: 10

@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
     // Preparar y ejecutar la consulta SQL para obtener el usuario
-    $sql = "SELECT id, email, password FROM validation WHERE email = ?";
+    $sql = "SELECT id, email, password FROM autenticacion WHERE email = ?";
     if ($stmt = $mysqli->prepare($sql)) {
         $stmt->bind_param("s", $email);
         $stmt->execute();
