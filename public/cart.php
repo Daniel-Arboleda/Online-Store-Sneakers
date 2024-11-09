@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 // Incluir el archivo de conexión a la base de datos
 // require 'conexion.php';
-require __DIR__ . '/config/conexion.php';
+require __DIR__ . '../config/conexion.php';
 
 
 // Obtener el ID del usuario de la sesión

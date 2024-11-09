@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 // Incluir la conexión a la base de datos
 // require 'conexion.php';
-require __DIR__ . '/config/conexion.php';
+require __DIR__ . '../config/conexion.php';
 
 // Inicializar la consulta base
 $sql = "SELECT id, nombre, descripcion, precio, cantidad, imagen FROM productos";

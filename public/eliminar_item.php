@@ -2,7 +2,7 @@
 
 <?php
 session_start(); // Iniciar la sesión
-require __DIR__ . '/config/conexion.php';
+require __DIR__ . '../config/conexion.php';
 
 
 // Verificar si el usuario está autenticado
