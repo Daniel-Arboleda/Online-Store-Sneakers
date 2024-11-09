@@ -1,3 +1,4 @@
+<!-- menu.php -->
 <?php
 // Iniciar sesión al principio del archivo
 if (session_status() == PHP_SESSION_NONE) {
@@ -5,8 +6,8 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Verificar si el usuario está logueado
-$isLoggedIn = isset($_SESSION['email']); // Verificamos que 'email' exista en la sesión
-$usuarioEmail = $isLoggedIn ? $_SESSION['email'] : ''; // Si está logueado, obtenemos el email
+$isLoggedIn = isset($_SESSION['email']);
+$usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -19,40 +20,29 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : ''; // Si está logueado, obt
             <li class="nav-item">
                 <a class="nav-link" href="dashboard.php">Inicio</a>
             </li>
+            <!-- Sección de Perfil -->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPerfil" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Perfil
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownPerfil">
                     <a class="dropdown-item" href="mostrar_perfil.php">Ver Perfil</a>
                     <a class="dropdown-item" href="perfil.php">Editar Perfil</a>
                 </div>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Tienda
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="tienda.php">Ver Tienda</a>
-                </div>
+            <!-- Tienda -->
+            <li class="nav-item">
+                <a class="nav-link" href="tienda.php">Tienda</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Productos
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="ver_stock.php">Ver Stock</a>
-                    <a class="dropdown-item" href="agregar_producto.php">Crear Productos</a>
-                </div>
-            </li>
+            <!-- Carrito de Compras -->
             <li class="nav-item">
                 <a class="nav-link" href="cart.php">Carrito</a>
             </li>
+            <!-- Historial de Facturas -->
             <li class="nav-item">
                 <a class="nav-link" href="ver_facturas.php">Facturas</a>
             </li>
         </ul>
-
     </div>
     <!-- Usuario y búsqueda -->
     <div class="d-flex align-items-center">
@@ -62,8 +52,8 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : ''; // Si está logueado, obt
             <p class="alert alert-warning mb-0 mr-3"> No has iniciado sesión.</p>
         <?php endif; ?>
         <form class="form-inline my-2 my-lg-0 mr-3">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Buscar">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
         <?php if ($isLoggedIn): ?>
             <a class="btn btn-warning" href="logout.php" role="button">Cerrar sesión</a>

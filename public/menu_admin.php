@@ -1,3 +1,4 @@
+<!-- menu_admin.php -->
 <?php
 // Iniciar sesión al principio del archivo
 if (session_status() == PHP_SESSION_NONE) {

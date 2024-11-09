@@ -1,22 +1,18 @@
 <?php
 session_start();
-// require 'conexion.php';
 require __DIR__ . '/../config/conexion.php';
-// Verificar si el usuario está autenticado
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+
+// Verificar si el usuario es administrador
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
+
 // Consultar los productos
 $sql = "SELECT id, nombre, descripcion, precio, cantidad, imagen FROM productos";
-if ($stmt = $mysqli->prepare($sql)) {
-    $stmt->execute();
-    $result = $stmt->get_result();
-} else {
-    die("Error en la preparación de la consulta SQL: " . $mysqli->error);
-}
-$mysqli->close();
+$result = $mysqli->query($sql);
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -27,9 +23,9 @@ $mysqli->close();
 </head>
 <body>
     <?php include 'menu.php'; ?>
+
     <div class="container mt-5">
         <h2>Stock de Productos</h2>
-        <!-- Tabla para mostrar el stock de productos -->
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -40,7 +36,6 @@ $mysqli->close();
                     <th>Cantidad</th>
                     <th>Imagen</th>
                     <th>Eliminar</th>
-                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,31 +48,16 @@ $mysqli->close();
                             <td><?php echo htmlspecialchars($row['precio']); ?></td>
                             <td><?php echo htmlspecialchars($row['cantidad']); ?></td>
                             <td>
-                                <?php if ($row['imagen']): ?>
-                                    <?php
-                                    // Construir la ruta completa de la imagen
-                                    $image_path = 'uploads/' . htmlspecialchars($row['imagen']);
-                                    // Verificar si el archivo existe
-                                    if (file_exists($image_path)): ?>
-                                        <!-- Mostrar la imagen con la ruta correcta -->
-                                        <img src="<?php echo $image_path; ?>" alt="Imagen del producto" style="max-width: 100px;">
-                                    <?php else: ?>
-                                        Imagen no encontrada
-                                    <?php endif; ?>
+                                <?php if ($row['imagen'] && file_exists(__DIR__ . '/../uploads/' . $row['imagen'])): ?>
+                                    <img src="uploads/<?php echo htmlspecialchars($row['imagen']); ?>" alt="Imagen" style="max-width: 100px;">
                                 <?php else: ?>
                                     No disponible
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <form action="tienda.php" method="post">
-                                    <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($row['id']); ?>">
+                                <form action="eliminar_producto.php" method="post">
+                                    <input type="hidden" name="producto_id" value="<?php echo $row['id']; ?>">
                                     <button type="submit" class="btn btn-danger">Eliminar</button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="tienda.php" method="post">
-                                    <input type="hidden" name="producto_id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                                    <button type="submit" class="btn btn-success">Comprar</button>
                                 </form>
                             </td>
                         </tr>
@@ -90,8 +70,5 @@ $mysqli->close();
             </tbody>
         </table>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

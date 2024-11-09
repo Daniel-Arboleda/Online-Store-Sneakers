@@ -1,23 +1,35 @@
 <!-- agregar_producto.php -->
-
 <?php
 session_start();
 require __DIR__ . '/../config/conexion.php';
-if (isset($_GET['id']) && isset($_GET['cantidad'])) {
-    $producto_id = $_GET['id'];
-    $cantidad = $_GET['cantidad'];
 
-    // Validación básica para asegurarse de que la cantidad es un número positivo
-    if (is_numeric($cantidad) && $cantidad > 0) {
-        // Lógica para agregar el producto al carrito
-    } else {
-        echo "Cantidad no válida.";
-    }
-} else {
-    echo "Error: No se han pasado los parámetros requeridos.";
+// Verificación de sesión y rol de administrador
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] !== 'admin') {
+    header('Location: login.php');
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nombre = $_POST['nombre'];
+    $descripcion = $_POST['descripcion'];
+    $precio = $_POST['precio'];
+    $cantidad = $_POST['cantidad'];
+    $imagen = $_FILES['imagen']['name'];
+
+    // Guardar la imagen en la carpeta 'uploads'
+    $target_dir = __DIR__ . '/../uploads/';
+    $target_file = $target_dir . basename($imagen);
+    move_uploaded_file($_FILES['imagen']['tmp_name'], $target_file);
+
+    // Insertar producto en la base de datos
+    $stmt = $mysqli->prepare("INSERT INTO productos (nombre, descripcion, precio, cantidad, imagen) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssdis", $nombre, $descripcion, $precio, $cantidad, $imagen);
+    $stmt->execute();
+    $stmt->close();
+    header('Location: stock_productos.php');
+    exit();
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -32,7 +44,7 @@ if (isset($_GET['id']) && isset($_GET['cantidad'])) {
 
     <div class="container mt-5">
         <h2>Agregar Producto</h2>
-        <form action="guardar_producto.php" method="POST" enctype="multipart/form-data">
+        <form action="agregar_producto.php" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" class="form-control" required>
@@ -56,9 +68,5 @@ if (isset($_GET['id']) && isset($_GET['cantidad'])) {
             <button type="submit" class="btn btn-primary">Agregar Producto</button>
         </form>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
