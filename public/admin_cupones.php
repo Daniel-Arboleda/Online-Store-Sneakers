@@ -9,7 +9,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
 
 // Incluir la conexión a la base de datos
 // require 'conexion.php';
-require __DIR__ . '../config/conexion.php';
+require __DIR__ . '/../config/conexion.php';
 
 
 // Consultar todos los cupones activos

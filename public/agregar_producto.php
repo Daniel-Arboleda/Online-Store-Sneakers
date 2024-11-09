@@ -2,7 +2,7 @@
 
 <?php
 session_start();
-require __DIR__ . '../config/conexion.php';
+require __DIR__ . '/../config/conexion.php';
 if (isset($_GET['id']) && isset($_GET['cantidad'])) {
     $producto_id = $_GET['id'];
     $cantidad = $_GET['cantidad'];

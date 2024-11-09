@@ -6,7 +6,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 // require 'conexion.php';
-require __DIR__ . '../config/conexion.php';
+require __DIR__ . '/../config/conexion.php';
 
 
 if (isset($_POST['producto_id'], $_POST['puntuacion'], $_POST['usuario_email'])) {

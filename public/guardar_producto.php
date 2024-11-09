@@ -2,7 +2,7 @@
 session_start();
 $email = $_SESSION['email']; // Asegúrate de que el email esté en la sesión
 // require 'conexion.php';
-require __DIR__ . '../config/conexion.php';
+require __DIR__ . '/../config/conexion.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
