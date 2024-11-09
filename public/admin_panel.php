@@ -48,7 +48,7 @@ $mysqli->close();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <?php include 'menu.php'; ?>
+    <?php include 'menu_admin.php'; ?>
     
     <div class="container mt-5">
         <h2>Gestión de Usuarios</h2>
