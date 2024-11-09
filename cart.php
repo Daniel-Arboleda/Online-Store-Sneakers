@@ -32,6 +32,61 @@ if ($stmt = $mysqli->prepare($sql)) {
 }
 
 $mysqli->close();
+
+
+// Verificar si se ha enviado un código de descuento
+if (isset($_POST['codigo_descuento'])) {
+    $codigo_descuento = $_POST['codigo_descuento'];
+
+    // Consultar la base de datos para verificar si el código es válido
+    $sql = "SELECT * FROM cupones WHERE codigo = ? AND activo = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin";
+    if ($stmt = $mysqli->prepare($sql)) {
+        $stmt->bind_param("s", $codigo_descuento);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // El cupón es válido, obtener los datos del cupón
+            $cupón = $result->fetch_assoc();
+            $tipo_descuento = $cupón['tipo_descuento'];
+            $valor_descuento = $cupón['valor'];
+            
+            // Aplicar descuento
+            $total_carrito = 0; // Variable para calcular el total del carrito
+            $descuento = 0;
+
+            // Iterar sobre los productos en el carrito y calcular el total
+            while ($row = $result_carrito->fetch_assoc()) {
+                $total_carrito += $row['precio'] * $row['cantidad']; // Sumar el precio por la cantidad
+            }
+
+            // Calcular el descuento
+            if ($tipo_descuento === 'porcentaje') {
+                $descuento = ($total_carrito * $valor_descuento) / 100;
+            } elseif ($tipo_descuento === 'monto_fijo') {
+                $descuento = $valor_descuento;
+            }
+
+            // Restar el descuento al total
+            $total_con_descuento = $total_carrito - $descuento;
+        } else {
+            echo "El código de descuento no es válido o ha expirado.";
+        }
+    } else {
+        echo "Error al verificar el código de descuento.";
+    }
+}
+
+if (isset($total_con_descuento)): ?>
+    <div class="alert alert-success mt-3">
+        ¡Descuento Aplicado! Has ahorrado: $<?php echo number_format($descuento, 2); ?>
+        <br>
+        Total después del descuento: $<?php echo number_format($total_con_descuento, 2); ?>
+    </div>
+<?php endif;
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -41,11 +96,14 @@ $mysqli->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 <body>
     <?php include 'menu.php'; ?>
     <div class="container mt-5">
-        <h2>Carrito de Compras</h2>
+        <!-- <h1>Tu Carrito de Compras</h1> -->
+        <h2>Tu Carrito de Compras</h2>
         <!-- Tabla para mostrar los productos en el carrito -->
         <table class="table table-bordered table-striped">
             <thead>
@@ -90,12 +148,28 @@ $mysqli->close();
                     </tr>
                 <?php endif; ?>
             </tbody>
-
+            
         </table>
+        <div class="form-group">
+            <label for="codigo_descuento">Código de Descuento</label>
+            <input type="text" id="codigo_descuento" name="codigo_descuento" class="form-control" placeholder="Introduce tu código de descuento">
+            <button type="submit" class="btn btn-primary mt-2">Aplicar Descuento</button>
+        </div>
+
+        <h4>
+            Total: $<?php echo number_format($total_con_descuento, 2); ?>
+        </h4>
+        
         <!-- Botón para pagar -->
         <form action="pagar.php" method="post">
-            <button type="submit" class="btn btn-success">Pagar</button>
+            <button type="submit" class="btn btn-success">
+                Ir a Pagar
+            </button>
         </form>
+        <!-- Botón Redirigir a la Tienda -->
+        <a href="tienda.php" class="btn btn-secondary btn-block mt-2">
+            <i class="fas fa-store"></i> Ir a la Tienda
+        </a>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

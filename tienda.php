@@ -31,14 +31,15 @@ if (!$resultado) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda - StoreThays</title>
+    <title>Tienda Sneakers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
 </head>
 <body>
     <!-- Menú de navegación -->
     <?php include 'menu.php'; ?>
-    <h1 class="text-center mt-4">Tienda</h1>
+    <!-- <h1 class="text-center mt-4">Tu Tienda</h1> -->
+    <h2 class="text-center mt-4">Tu Tienda</h2>
     <!-- Contenido principal -->
     <div class="container mt-5">
         <h2 class="text-center mb-4">Productos Disponibles</h2>
