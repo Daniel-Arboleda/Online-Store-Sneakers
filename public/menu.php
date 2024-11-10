@@ -38,6 +38,10 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
             <li class="nav-item">
                 <a class="nav-link" href="cart.php">Carrito</a>
             </li>
+            <!-- Sección de Pedidos -->
+            <li class="nav-item">
+                <a class="nav-link" href="mis_pedidos.php">Pedidos</a>
+            </li>
             <!-- Historial de Facturas -->
             <li class="nav-item">
                 <a class="nav-link" href="ver_facturas.php">Facturas</a>
