@@ -75,3 +75,15 @@ htdocs/
 
 login_user.php
 create_user.php
+
+# Ignorar las dependencias y cachés de Composer, excepto el archivo lock
+/vendor/            # Carpeta con dependencias de Composer
+
+# Ignorar datos de compilación y cachés
+/.cache/
+/public/js/pago_config.js  # Cualquier archivo de configuración con credenciales en JS
+
+# Ignorar configuraciones del entorno de desarrollo
+*.log
+
+git add public/js/*.js

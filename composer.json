@@ -1,0 +1,7 @@
+{
+    "name": "vendor/online-store-sneakers",
+    "description": "Online Store for Sneakers",
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
