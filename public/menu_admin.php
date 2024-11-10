@@ -18,7 +18,7 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
     <div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="admin_dashboard.php">Dashboard</a>
+                <a class="nav-link" href="dashboard_admin.php">Dashboard</a>
             </li>
             <!-- Gestión de Productos -->
             <li class="nav-item dropdown">
