@@ -103,16 +103,20 @@ $mysqli->close();
 
 
 
-// Backend MercadoPago PHP
-
+// Backend del botón de MercadoPago PHP
+ 
 use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\MercadoPagoConfig;
 require '../vendor/autoload.php';
 
-MercadoPagoConfig::setAccessToken("APP_USR-569145724370318-111023-dd12d2e189ea0f519aa51129c138a5a2-2088531771");
+MercadoPagoConfig::setAccessToken("TEST-1779176051186418-111023-ff56be2febaef0332da0e281eab8617b-2091124386");
 
+// Son los datos que se se le envian al botón para ser reconocidos.
 $client = new PreferenceClient();
+    // $stmt->bind_param("i", $usuario_id);
+    
 
+// Preferenias para el botón, se puede agregar diferentes elementos, productos o servicios, con diversos elementos dentro.
 $preference =$client->create([
     "items" => [
         [
@@ -122,11 +126,18 @@ $preference =$client->create([
             "unit_price" => 100.00 
         ],
     ],
+    "player"=>[
+        // Correo del usuario de prueba
+        "email" => "do@do.co"
+    ],
 
+    // Datos para identificar el negocio.
     "statement_descriptor" => "Tienda-Sneakers",
+    // Identificador para el pago que se esta realizado.
     "external_reference" => "CDP001"
 ]);     
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -220,7 +231,7 @@ $preference =$client->create([
         <div id="wallet_container">
         </div>
         <script>
-            const mp = new MercadoPago('APP_USR-30509d8a-5e3c-44b2-9292-e4ba3004c506', {
+            const mp = new MercadoPago('TEST-c4057524-8841-4c8f-8304-d497aecc89a0', {
                 locale: 'es-CO'
             });
 
