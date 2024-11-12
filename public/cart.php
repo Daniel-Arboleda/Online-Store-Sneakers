@@ -100,6 +100,32 @@ if (isset($_POST['codigo_descuento'])) {
 } 
 
 $mysqli->close();
+
+
+
+// Backend MercadoPago PHP
+
+use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\MercadoPagoConfig;
+require '../vendor/autoload.php';
+
+MercadoPagoConfig::setAccessToken("APP_USR-569145724370318-111023-dd12d2e189ea0f519aa51129c138a5a2-2088531771");
+
+$client = new PreferenceClient();
+
+$preference =$client->create([
+    "items" => [
+        [
+            "id" => "DEP-001",
+            "title" => "",
+            "quantity" => 1,
+            "unit_price" => 100.00 
+        ],
+    ],
+
+    "statement_descriptor" => "Tienda-Sneakers",
+    "external_reference" => "CDP001"
+]);     
 ?>
 
 <!DOCTYPE html>
@@ -110,6 +136,9 @@ $mysqli->close();
     <title>Carrito de Compras</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://sdk.mercadopago.com/js/v2">
+    </script>
+    <script type="text/javascript" src="js/mercadoPago.js" defer></script>
 </head>
 <body>
     <?php include 'menu.php'; ?>
@@ -186,6 +215,26 @@ $mysqli->close();
         <form action="pagar.php" method="post">
             <button type="submit" class="btn btn-success mt-3">Proceder al Pago</button>
         </form>
+
+        <!-- Contenedor para renderizar el botón de MercadoPago -->
+        <div id="wallet_container">
+        </div>
+        <script>
+            const mp = new MercadoPago('APP_USR-30509d8a-5e3c-44b2-9292-e4ba3004c506', {
+                locale: 'es-CO'
+            });
+
+            mp.bricks().create("wallet", "wallet_container", {
+                initialization: {
+                    // preferenceId: "<PREFERENCE_ID>",
+                    preferenceId: "<?php echo $preference->id; ?>",
+                },
+            });
+        </script>
+
+
+
+
         <!-- Botón Redirigir a la Tienda-->
         <a href="tienda.php" class="btn btn-secondary btn-block mt-2">
             <i class="fas fa-store"></i> Ir a la Tienda
