@@ -9,7 +9,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 
 // Incluir el archivo de conexión a la base de datos
 // require 'conexion.php';
-require __DIR__ . '/../config/conexion.php';
+require __DIR__ . '/../../config/conexion.php';
 
 
 // Obtener el ID del usuario de la sesión
@@ -107,7 +107,7 @@ $mysqli->close();
  
 use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\MercadoPagoConfig;
-require '../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 // MercadoPagoConfig::setAccessToken("TEST-1779176051186418-111023-ff56be2febaef0332da0e281eab8617b-2091124386");
 MercadoPagoConfig::setAccessToken("APP_USR-1500718036145790-111202-081e104f96ac7ab58de504020c288c4b-2088531771");

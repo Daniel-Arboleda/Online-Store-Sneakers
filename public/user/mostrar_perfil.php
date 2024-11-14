@@ -1,13 +1,19 @@
 <?php
 session_start();
 // require 'conexion.php';
-require __DIR__ . '/../config/conexion.php';
+require __DIR__ . '/../../config/conexion.php';
 
 // Verificar si el usuario está autenticado
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: login.php');
     exit();
 }
+
+// // Verificar el rol del usuario (cliente tiene rol_id = 3)
+// if ($_SESSION['rol_id'] !== 3) {
+//     header('Location: login.php'); // Redirige si el usuario no es cliente
+//     exit();
+// }
 
 $email = $_SESSION['email'];
 

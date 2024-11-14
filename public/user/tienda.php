@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Incluir la conexión a la base de datos
-require __DIR__ . '/../config/conexion.php';
+require __DIR__ . '/../../config/conexion.php';
 
 // Consultar géneros y categorías para mostrarlos en los filtros
 $genero_sql = "SELECT id, nombre FROM generos";

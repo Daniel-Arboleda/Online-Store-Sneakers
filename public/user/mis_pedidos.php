@@ -18,7 +18,7 @@ if (!isset($_SESSION['user_id'])) {
 // echo " usuario_id en la sesión: " . (isset($_SESSION['email']) ? $_SESSION['email'] : 'No encontrado');
 
 // Incluir el archivo de conexión
-require '../config/conexion.php';
+require __DIR__ . '/../../config/conexion.php';
 
 // Consultar los pedidos del usuario actual
 $usuario_id = $_SESSION['user_id'];
