@@ -1,6 +1,11 @@
 <?php
 session_start();
-$email = $_SESSION['email']; // Asegúrate de que el email esté en la sesión
+// Verificar si el usuario está autenticado y tiene el rol de administrador
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol_id'] !== 1) {
+    header('Location: login.php'); // Redirige al formulario de login si no está autenticado o no es administrador
+    exit();
+}
+
 // require 'conexion.php';
 require __DIR__ . '/../config/conexion.php';
 

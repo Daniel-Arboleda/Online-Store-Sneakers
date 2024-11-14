@@ -3,9 +3,9 @@
 session_start();
 require __DIR__ . '/../config/conexion.php';
 
-// Verificación de sesión y rol de administrador
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol'] !== 'admin') {
-    header('Location: login.php');
+// Verificar si el usuario está autenticado y tiene el rol de administrador
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol_id'] !== 1) {
+    header('Location: login.php'); // Redirige al formulario de login si no está autenticado o no es administrador
     exit();
 }
 
