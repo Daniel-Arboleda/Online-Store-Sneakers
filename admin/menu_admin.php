@@ -34,7 +34,7 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
                     Usuarios
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownUsuarios">
-                    <a class="dropdown-item" href="admin_usuarios.php">Ver Usuarios</a>
+                    <a class="dropdown-item" href="admin_usuariosl.php">Ver Usuarios</a>
                     <a class="dropdown-item" href="permisos.php">Permisos</a>
                     <a class="dropdown-item" href="usuarios_bloqueados.php">Usuarios Bloqueados</a>
                 </div>
