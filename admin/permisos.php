@@ -8,7 +8,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
     exit();
 }
 
-// Código para conectar a la base de datos y obtener usuarios y roles
+// Conectar a la base de datos y obtener usuarios y roles
 include '../config/conexion.php';
 
 // Consulta para obtener todos los usuarios y sus roles
@@ -26,6 +26,9 @@ $result = $mysqli->query($query);
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Incluir el menú de administración -->
+    <?php include 'menu_admin.php'; ?>
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
@@ -52,13 +55,13 @@ $result = $mysqli->query($query);
                         <?php endwhile; ?>
                     </tbody>
                 </table>
-                <a href="dashboard.php" class="btn btn-secondary mt-3">Regresar al Dashboard</a>
+                <a href="dashboard_admin.php" class="btn btn-secondary mt-3">Regresar al Dashboard</a>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- jQuery, Popper.js, y Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
