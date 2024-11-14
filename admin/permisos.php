@@ -10,11 +10,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
 }
 
 // Código para conectar a la base de datos y obtener usuarios y roles
-include '../config/db_connect.php'; // Archivo de conexión
+include '../config/conexion.php'; // Archivo de conexión
 
 // Consulta para obtener todos los usuarios y sus roles
-$query = "SELECT u.id, u.email, r.nombre_rol FROM usuarios u LEFT JOIN roles r ON u.rol_id = r.id";
-$result = $conn->query($query);
+$query = "SELECT u.id, u.email, r.nombre_rol FROM autenticacion u LEFT JOIN roles r ON u.rol_id = r.id";
+$result = $mysqli->query($query);
 ?>
 
 <!DOCTYPE html>
