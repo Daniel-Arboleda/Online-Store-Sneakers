@@ -1,6 +1,5 @@
 <!-- admin_productos.php -->
 
-
 <?php
 session_start();
 require __DIR__ . '/../config/conexion.php';
@@ -10,10 +9,12 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
     exit();
 }
 
-// Obtener todos los productos de la base de datos, incluyendo el nombre de la categoría
-$sql = "SELECT productos.id, productos.nombre, productos.descripcion, productos.precio, productos.cantidad, productos.imagen, categorias.nombre AS categoria_nombre, productos.genero
+// Obtener todos los productos de la base de datos, incluyendo el nombre de la categoría y el género
+$sql = "SELECT productos.id, productos.nombre, productos.descripcion, productos.precio, productos.cantidad, productos.imagen, 
+            categorias.nombre AS categoria_nombre, generos.nombre AS genero_nombre
         FROM productos
-        LEFT JOIN categorias ON productos.categoria_id = categorias.id";
+        LEFT JOIN categorias ON productos.categoria_id = categorias.id
+        LEFT JOIN generos ON productos.genero_id = generos.id";
 $result = $mysqli->query($sql);
 
 // Obtener todas las categorías para el formulario
@@ -70,7 +71,7 @@ $categorias = $mysqli->query($sql_categorias);
                             <?php endif; ?>
                         </td>
                         <td><?php echo htmlspecialchars($row['categoria_nombre']); ?></td>
-                        <td><?php echo htmlspecialchars($row['genero']); ?></td> <!-- Mostrar el género -->
+                        <td><?php echo htmlspecialchars($row['genero_nombre']); ?></td> <!-- Mostrar el nombre del género -->
                         <td>
                             <button class="btn btn-warning edit-product" data-id="<?php echo $row['id']; ?>">Editar</button>
                             <form action="eliminar_producto.php" method="post" style="display:inline;">
@@ -171,14 +172,14 @@ $categorias = $mysqli->query($sql_categorias);
                 event.preventDefault();
                 var formData = new FormData(this);
                 $.ajax({
-                    url: 'guardar_producto.php',  // Crear este archivo para manejar la inserción y actualización
+                    url: 'guardar_producto.php',  // Crear este archivo para guardar o actualizar el producto
                     method: 'POST',
                     data: formData,
-                    contentType: false,
                     processData: false,
+                    contentType: false,
                     success: function(response) {
-                        alert(response.message);
-                        location.reload();
+                        alert(response);
+                        location.reload();  // Recargar la página para ver los cambios
                     }
                 });
             });
