@@ -60,7 +60,7 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
         <?php if ($isLoggedIn): ?>
-            <a class="btn btn-warning" href="logout.php" role="button">Cerrar sesión</a>
+            <a class="btn btn-warning" href="../../auth/logout.php" role="button">Cerrar sesión</a>
         <?php else: ?>
             <a class="btn btn-warning" href="login.php" role="button">Iniciar sesión</a>
         <?php endif; ?>

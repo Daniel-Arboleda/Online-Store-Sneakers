@@ -94,7 +94,7 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
         </form>
 
         <?php if ($isLoggedIn): ?>
-            <a class="btn btn-warning" href="logout.php" role="button">Cerrar sesión</a>
+            <a class="btn btn-warning" href="../auth/logout.php" role="button">Cerrar sesión</a>
         <?php else: ?>
             <a class="btn btn-warning" href="login.php" role="button">Iniciar sesión</a>
         <?php endif; ?>
