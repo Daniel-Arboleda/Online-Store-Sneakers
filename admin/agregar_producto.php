@@ -4,7 +4,7 @@ session_start();
 require __DIR__ . '/../config/conexion.php';
 
 // Verificación de sesión y rol de administrador
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <?php include 'menu.php'; ?>
+    <?php include 'menu_admin.php'; ?>
 
     <div class="container mt-5">
         <h2>Agregar Producto</h2>

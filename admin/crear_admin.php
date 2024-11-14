@@ -4,7 +4,7 @@
 session_start();
 
 // Verificar si el usuario está logueado y si tiene rol de 'admin'
-if (!isset($_SESSION['logged_in']) || $_SESSION['role'] != 'admin') {
+if (!isset($_SESSION['logged_in']) || $_SESSION['rol'] != 'admin') {
     header("Location: login.php");  // Redirigir a login si no es admin
     exit();
 }

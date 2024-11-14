@@ -3,38 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Usuario Sneakers</title>
+    <title>Login Sneakers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .form-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centrar el contenido */
+            height: 100vh; /* Altura completa de la ventana */
+        }
+        .login-form {
+            width: 50%;
         }
     </style>
 </head>
 <body>
     <?php include 'menu_out.php'; ?>
-    <div class="container form-container">
-        <h2 class="mb-4">Crear Nuevo Usuario</h2>
-        <form method="POST" action="create_user.php">
+    <div class="container login-container">
+        <div class="login-form">
+            <h2 class="mb-4">Iniciar Sesión</h2>
+            <form method="POST" action="../auth/login_user.php">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" class="form-control" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" class="form-control" required autocomplete="current-password">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </div>
+            </form>
+            
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" required>
+                <a href="create_account.php" class="btn btn-secondary">Crear Cuenta</a>
             </div>
-            <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Crear Usuario</button>
-            <a href="login.php" class="btn btn-secondary">Iniciar Sesión</a>
-        </form>
+        </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

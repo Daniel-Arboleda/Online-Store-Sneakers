@@ -3,7 +3,7 @@ session_start();
 require __DIR__ . '/../config/conexion.php';
 
 // Verificar si el usuario es administrador
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
@@ -22,7 +22,7 @@ $result = $mysqli->query($sql);
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <?php include 'menu.php'; ?>
+    <?php include 'menu_admin.php'; ?>
 
     <div class="container mt-5">
         <h2>Stock de Productos</h2>

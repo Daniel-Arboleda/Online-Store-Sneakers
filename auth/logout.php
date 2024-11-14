@@ -1,3 +1,5 @@
+<!-- /auth/logout.php -->
+
 <?php
 session_start(); // Iniciar la sesión
 
@@ -6,6 +8,6 @@ session_unset();
 session_destroy();
 
 // Redirigir al formulario de login
-header('Location: login.php');
+header('Location: index.php');
 exit();
 ?>

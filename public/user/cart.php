@@ -109,8 +109,8 @@ use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\MercadoPagoConfig;
 require '../vendor/autoload.php';
 
-MercadoPagoConfig::setAccessToken("TEST-1779176051186418-111023-ff56be2febaef0332da0e281eab8617b-2091124386");
-
+// MercadoPagoConfig::setAccessToken("TEST-1779176051186418-111023-ff56be2febaef0332da0e281eab8617b-2091124386");
+MercadoPagoConfig::setAccessToken("APP_USR-1500718036145790-111202-081e104f96ac7ab58de504020c288c4b-2088531771");
 // Son los datos que se se le envian al botón para ser reconocidos.
 $client = new PreferenceClient();
     // $stmt->bind_param("i", $usuario_id);
@@ -121,7 +121,7 @@ $preference =$client->create([
     "items" => [
         [
             "id" => "DEP-001",
-            "title" => "",
+            "title" => "Jordan 1",
             "quantity" => 1,
             "unit_price" => 100.00 
         ],
@@ -137,8 +137,6 @@ $preference =$client->create([
     "external_reference" => "CDP001"
 ]);     
 ?>
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -223,15 +221,16 @@ $preference =$client->create([
         <?php endif; ?>
 
         <!-- Botón para pagar -->
-        <form action="pagar.php" method="post">
+        <!-- <form action="pagar.php" method="post">
             <button type="submit" class="btn btn-success mt-3">Proceder al Pago</button>
-        </form>
+        </form> -->
 
         <!-- Contenedor para renderizar el botón de MercadoPago -->
         <div id="wallet_container">
         </div>
         <script>
-            const mp = new MercadoPago('TEST-c4057524-8841-4c8f-8304-d497aecc89a0', {
+            const mp = new MercadoPago('APP_USR-83975ae8-8583-425d-a8bc-be789ddc1302', {
+                
                 locale: 'es-CO'
             });
 
@@ -239,7 +238,15 @@ $preference =$client->create([
                 initialization: {
                     // preferenceId: "<PREFERENCE_ID>",
                     preferenceId: "<?php echo $preference->id; ?>",
+                    // redirectMode: 'blank'
+                    redirecMode: 'modal'
                 },
+                customization: {
+                    texts: {
+                        action: 'buy',
+                        valueProp: 'security_details'
+                    }
+                }
             });
         </script>
 

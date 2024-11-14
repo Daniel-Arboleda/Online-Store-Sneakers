@@ -1,14 +1,22 @@
 <!-- dashboard_admin.php -->
 
 <?php
+
 session_start();
 
-// Verificar si el usuario está autenticado y es administrador
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['role'] !== 'admin') {
-    header('Location: login.php'); // Redirigir al formulario de login si no está autenticado o no es administrador
+// Verificar si el usuario está autenticado y tiene el rol de administrador
+if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol'] !== 'admin') {
+    header('Location: login.php'); // Redirige al formulario de login si no está autenticado o no es administrador
     exit();
 }
+
+// Incluir el archivo de conexión a la base de datos
+// require 'conexion.php';
+require __DIR__ . '/../config/conexion.php';
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,9 +24,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Administrador - Sneakers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
 </head>
 <body>
-    <?php include 'menu_admin.php'; ?> <!-- Esto incluye el menú de administrador -->
+    <?php include 'menu_admin.php'; ?>
     
     <div class="container my-5">
         <h1>Bienvenido al Dashboard de Administración, <?php echo htmlspecialchars($_SESSION['email']); ?></h1>
@@ -78,8 +87,16 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSI
         </div>
     </div>
     
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- jQuery y Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- Activar submenús -->
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
 </body>
 </html>
