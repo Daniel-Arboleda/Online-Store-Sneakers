@@ -1,3 +1,7 @@
+<!-- guardar_producto.php -->
+
+
+
 <?php
 session_start();
 // Verificar si el usuario está autenticado y tiene el rol de administrador

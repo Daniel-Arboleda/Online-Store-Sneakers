@@ -6,20 +6,19 @@ session_start();
 require __DIR__ . '/../config/conexion.php';
 // Verificar si el usuario está autenticado y tiene el rol de administrador
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol_id'] !== 1) {
-    header('Location: login.php'); // Redirige al formulario de login si no está autenticado o no es administrador
-    exit();
-}
-
-
-// Verificar si el usuario está autenticado y es administrador
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol_id'] !== 1) {
     header('Location: login.php');
     exit();
 }
 
-// Obtener todos los productos de la base de datos
-$sql = "SELECT id, nombre, descripcion, precio, cantidad, imagen FROM productos";
+// Obtener todos los productos de la base de datos, incluyendo el nombre de la categoría
+$sql = "SELECT productos.id, productos.nombre, productos.descripcion, productos.precio, productos.cantidad, productos.imagen, categorias.nombre AS categoria_nombre, productos.genero
+        FROM productos
+        LEFT JOIN categorias ON productos.categoria_id = categorias.id";
 $result = $mysqli->query($sql);
+
+// Obtener todas las categorías para el formulario
+$sql_categorias = "SELECT id, nombre FROM categorias";
+$categorias = $mysqli->query($sql_categorias);
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +49,8 @@ $result = $mysqli->query($sql);
                     <th>Precio</th>
                     <th>Cantidad</th>
                     <th>Imagen</th>
+                    <th>Categoría</th>
+                    <th>Género</th> <!-- Nueva columna para el género -->
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -68,6 +69,8 @@ $result = $mysqli->query($sql);
                                 No disponible
                             <?php endif; ?>
                         </td>
+                        <td><?php echo htmlspecialchars($row['categoria_nombre']); ?></td>
+                        <td><?php echo htmlspecialchars($row['genero']); ?></td> <!-- Mostrar el género -->
                         <td>
                             <button class="btn btn-warning edit-product" data-id="<?php echo $row['id']; ?>">Editar</button>
                             <form action="eliminar_producto.php" method="post" style="display:inline;">
@@ -105,6 +108,22 @@ $result = $mysqli->query($sql);
                     <label for="imagen">Imagen:</label>
                     <input type="file" id="imagen" name="imagen" class="form-control-file" accept="image/*">
                 </div>
+                <div class="form-group">
+                    <label for="categoria_id">Categoría:</label>
+                    <select id="categoria_id" name="categoria_id" class="form-control" required>
+                        <?php while ($categoria = $categorias->fetch_assoc()): ?>
+                            <option value="<?php echo $categoria['id']; ?>"><?php echo htmlspecialchars($categoria['nombre']); ?></option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="genero">Género:</label>
+                    <select id="genero" name="genero" class="form-control" required>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Unisex">Unisex</option>
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-success">Guardar</button>
                 <button type="button" class="btn btn-secondary" id="cancelForm">Cancelar</button>
             </form>
@@ -139,6 +158,8 @@ $result = $mysqli->query($sql);
                         $('#descripcion').val(producto.descripcion);
                         $('#precio').val(producto.precio);
                         $('#cantidad').val(producto.cantidad);
+                        $('#categoria_id').val(producto.categoria_id);
+                        $('#genero').val(producto.genero);  // Mostrar el género en el formulario
                         $('#formTitle').text('Editar Producto');
                         $('#productForm').show();
                     }
