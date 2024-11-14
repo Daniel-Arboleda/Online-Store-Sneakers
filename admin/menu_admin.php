@@ -47,9 +47,9 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownTienda">
                     <!-- Gestión de Productos -->
-                    <a class="dropdown-item" href="agregar_producto.php">Crear Producto</a>
-                    <a class="dropdown-item" href="admin_productos.php">Ver/Editar Productos</a>
-                    <a class="dropdown-item" href="ver_stock.php">Ver/Editar Stock</a>
+                    <!-- <a class="dropdown-item" href="agregar_producto.php">Crear Producto</a> -->
+                    <a class="dropdown-item" href="admin_productos.php">Crear/Ver/Editar Productos & Stock</a>
+                    <!-- <a class="dropdown-item" href="ver_stock.php">Ver/Editar Stock</a> -->
                     <a class="dropdown-item" href="admin_categorias.php">Categorías</a>
                     
                     <!-- Gestión de Cupones -->

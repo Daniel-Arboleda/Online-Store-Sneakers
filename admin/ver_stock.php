@@ -1,3 +1,5 @@
+<!-- ver_stock.php -->
+
 <?php
 session_start();
 require __DIR__ . '/../config/conexion.php';
