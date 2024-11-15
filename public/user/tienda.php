@@ -41,6 +41,14 @@ if (!$resultado) {
     echo "Error en la consulta: " . $mysqli->error;
 }
 
+// Obtener todos los productos de la base de datos, incluyendo el nombre de la categoría y el género
+$sql = "SELECT productos.id, productos.nombre, productos.descripcion, productos.precio, productos.cantidad, productos.imagen, 
+            categorias.nombre AS categoria_nombre, generos.nombre AS genero_nombre
+        FROM productos
+        LEFT JOIN categorias ON productos.categoria_id = categorias.id
+        LEFT JOIN generos ON productos.genero_id = generos.id";
+$result = $mysqli->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +120,20 @@ if (!$resultado) {
             ?>
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
-                            <img src="<?php echo htmlspecialchars($producto['imagen']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($producto['nombre']); ?>" onerror="this.onerror=null; this.src='/TiendaTenis/uploads/Nike_1985_cuadrado_rojo.webp';">
+
+                            <!-- <img src="<?php echo htmlspecialchars($producto['imagen']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($producto['nombre']); ?>" onerror="this.onerror=null; this.src='../../uploads/Nike_1985_cuadrado_rojo.webp'; "> -->
+
+
+                            <?php if ($producto['imagen'] && file_exists(__DIR__ . '/../../uploads/' . $producto['imagen'])): ?>
+                                <img src="../../uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="Imagen">
+                            <?php else: ?>
+                                <img src="../../uploads/Nike_1985_cuadrado_rojo.webp" alt="">
+                                No disponible
+                            <?php endif; ?>                            
+
+
+
+
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($producto['nombre']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
@@ -132,7 +153,7 @@ if (!$resultado) {
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script>
         // Función para añadir al carrito
         function addToCart(productId) {
@@ -156,6 +177,7 @@ if (!$resultado) {
             });
         }
     </script>
+    <script>src="../assets/tienda.js" </script>
 </body>
 </html>
 
