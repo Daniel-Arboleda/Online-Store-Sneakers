@@ -3,6 +3,7 @@
 <?php
 session_start();
 require __DIR__ . '/../config/conexion.php';
+
 // Verificar si el usuario está autenticado y tiene el rol de administrador
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true || $_SESSION['rol_id'] !== 1) {
     header('Location: login.php');
@@ -29,7 +30,7 @@ $categorias = $mysqli->query($sql_categorias);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Productos - Admin</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
 <body>
     <?php include 'menu_admin.php'; ?>
@@ -65,11 +66,12 @@ $categorias = $mysqli->query($sql_categorias);
                         <td><?php echo htmlspecialchars($row['cantidad']); ?></td>
                         <td>
                             <?php if ($row['imagen'] && file_exists(__DIR__ . '/../uploads/' . $row['imagen'])): ?>
-                                <img src="uploads/<?php echo htmlspecialchars($row['imagen']); ?>" alt="Imagen" style="max-width: 100px;">
+                                <img src="../uploads/<?php echo htmlspecialchars($row['imagen']); ?>" alt="Imagen" style="max-width: 100px;">
                             <?php else: ?>
                                 No disponible
                             <?php endif; ?>
                         </td>
+
                         <td><?php echo htmlspecialchars($row['categoria_nombre']); ?></td>
                         <td><?php echo htmlspecialchars($row['genero_nombre']); ?></td> <!-- Mostrar el nombre del género -->
                         <td>
@@ -87,8 +89,8 @@ $categorias = $mysqli->query($sql_categorias);
         <!-- Formulario para agregar/editar producto -->
         <div id="productForm" style="display: none;">
             <h3 id="formTitle">Agregar Producto</h3>
-            <form id="productFormInner" enctype="multipart/form-data">
-                <input type="hidden" name="id" id="productId">
+            <form id="productFormInner" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="id_producto" value="">
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>
                     <input type="text" id="nombre" name="nombre" class="form-control" required>
@@ -106,10 +108,6 @@ $categorias = $mysqli->query($sql_categorias);
                     <input type="number" id="cantidad" name="cantidad" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="imagen">Imagen:</label>
-                    <input type="file" id="imagen" name="imagen" class="form-control-file" accept="image/*">
-                </div>
-                <div class="form-group">
                     <label for="categoria_id">Categoría:</label>
                     <select id="categoria_id" name="categoria_id" class="form-control" required>
                         <?php while ($categoria = $categorias->fetch_assoc()): ?>
@@ -125,7 +123,11 @@ $categorias = $mysqli->query($sql_categorias);
                         <option value="Unisex">Unisex</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success">Guardar</button>
+                <div class="form-group">
+                    <label for="imagen">Imagen:</label>
+                    <input type="file" id="imagen" name="imagen" class="form-control-file" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-success" onclick="guardarProducto()">Guardar</button>
                 <button type="button" class="btn btn-secondary" id="cancelForm">Cancelar</button>
             </form>
         </div>
@@ -137,6 +139,7 @@ $categorias = $mysqli->query($sql_categorias);
             $('#openAddProductForm').click(function() {
                 $('#formTitle').text('Agregar Producto');
                 $('#productFormInner').trigger("reset");
+                $('#productId').val('');  // Asegúrate de que el campo id esté vacío para nuevo producto
                 $('#productForm').show();
             });
 
@@ -149,12 +152,12 @@ $categorias = $mysqli->query($sql_categorias);
             $('.edit-product').click(function() {
                 var productId = $(this).data('id');
                 $.ajax({
-                    url: 'obtener_producto.php',  // Crear este archivo para obtener datos del producto
+                    url: 'obtener_producto.php',  // Este archivo obtiene los datos del producto
                     method: 'POST',
                     data: { id: productId },
                     success: function(data) {
                         var producto = JSON.parse(data);
-                        $('#productId').val(producto.id);
+                        $('#productId').val(producto.id);  // Asegúrate de pasar el id correcto al campo
                         $('#nombre').val(producto.nombre);
                         $('#descripcion').val(producto.descripcion);
                         $('#precio').val(producto.precio);
@@ -169,21 +172,33 @@ $categorias = $mysqli->query($sql_categorias);
 
             // Enviar el formulario de agregar/editar producto usando AJAX
             $('#productFormInner').submit(function(event) {
-                event.preventDefault();
-                var formData = new FormData(this);
+                event.preventDefault(); // Evitar que el formulario haga un submit por defecto
+                var formData = new FormData(this); // Crear FormData con todos los datos del formulario
+
+                // Verifica si el valor de genero_id está correctamente capturado
+                console.log('Genero ID:', $('#genero').val());
+
                 $.ajax({
-                    url: 'guardar_producto.php',  // Crear este archivo para guardar o actualizar el producto
+                    url: 'guardar_producto.php',  // Este archivo procesa los datos
                     method: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
+                    data: formData, // Se envía el formulario con los datos
+                    processData: false, // No procesar los datos como cadena (necesario para archivos)
+                    contentType: false, // No establecer el tipo de contenido para que se maneje adecuadamente el archivo
                     success: function(response) {
-                        alert(response);
+                        alert(response);  // Respuesta del servidor
                         location.reload();  // Recargar la página para ver los cambios
+                    },
+                    error: function() {
+                        alert("Error al enviar el formulario.");
                     }
                 });
             });
         });
     </script>
+
+    <script src="assets/js/admin_productos.js"></script>  <!-- Asegúrate de que la ruta sea correcta -->
+
+
+
 </body>
 </html>
