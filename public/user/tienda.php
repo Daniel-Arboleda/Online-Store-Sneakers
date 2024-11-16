@@ -59,6 +59,8 @@ $result = $mysqli->query($sql);
     <title>Tienda Sneakers</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
 <body>
     <!-- Menú de navegación -->
@@ -131,17 +133,29 @@ $result = $mysqli->query($sql);
                                 No disponible
                             <?php endif; ?>                            
 
-
-
-
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($producto['nombre']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
                                 <p class="card-text font-weight-bold">$<?php echo number_format($producto['precio'], 2); ?></p>
                                 <p class="card-text text-muted">Stock: <?php echo htmlspecialchars($producto['cantidad']); ?> unidades</p>
                                 <p class="card-text">Puntuación promedio: <?php echo number_format($avg_rating, 1); ?> / 5</p>
-                                <a href="javascript:void(0);" id="add-to-cart-<?php echo $producto['id']; ?>" class="btn btn-primary btn-block" onclick="addToCart('<?php echo $producto['id']; ?>')">Añadir al carrito</a>
+
+
+                                <!-- Contenedor para seleccionar cantidad -->
+                                <div class="quantity-selector">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1, '<?php echo $producto['id']; ?>', <?php echo $producto['cantidad']; ?>)">-</button>
+                                    <input type="number" id="quantity-<?php echo $producto['id']; ?>" value="1" min="1" max="<?php echo $producto['cantidad']; ?>" readonly class="form-control d-inline w-auto text-center">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1, '<?php echo $producto['id']; ?>', <?php echo $producto['cantidad']; ?>)">+</button>
+                                </div>
+
+                                <a href="javascript:void(0);" id="add-to-cart-<?php echo $producto['id']; ?>" class="btn btn-primary btn-block mt-2" onclick="addToCart('<?php echo $producto['id']; ?>')">Añadir al carrito</a>
+
+                                <a href="cart.php" id="" class="btn btn-primary btn-block mt-2">
+                                    <i class="fas fa-shopping-cart"></i> Ir al carrito
+                                </a>
+
                             </div>
+                            
                         </div>
                     </div>
             <?php
@@ -177,7 +191,8 @@ $result = $mysqli->query($sql);
             });
         }
     </script>
-    <script>src="../assets/tienda.js" </script>
+    <script src="../assets/js/tienda.js"></script>
+
 </body>
 </html>
 
