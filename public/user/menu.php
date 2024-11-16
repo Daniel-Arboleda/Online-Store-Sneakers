@@ -18,7 +18,7 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
     <div class="collapse navbar-collapse d-flex justify-content-between align-items-center" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="dashboard.php">Inicio</a>
+                <a class="nav-link" href="dashboard.php">Dashboard</a>
             </li>
             <!-- Sección de Perfil -->
             <li class="nav-item dropdown">
@@ -45,6 +45,10 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
             <!-- Historial de Facturas -->
             <li class="nav-item">
                 <a class="nav-link" href="ver_facturas.php">Facturas</a>
+            </li>
+            <!-- Devoluciones -->
+            <li class="nav-item">
+                <a class="nav-link" href="devoluciones.php">Devoluciones</a>
             </li>
         </ul>
     </div>
