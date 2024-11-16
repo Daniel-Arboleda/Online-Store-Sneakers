@@ -128,7 +128,8 @@ $preference =$client->create([
     ],
     "player"=>[
         // Correo del usuario de prueba
-        "email" => "do@do.co"
+        "email" => "do@do.co",
+        "email" => $_SESSION['user_id']
     ],
 
     // Datos para identificar el negocio.
@@ -176,12 +177,14 @@ $preference =$client->create([
                             <td><?php echo htmlspecialchars($producto['precio']); ?></td>
                             <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
                             <td>
-                                <?php if ($producto['imagen']): ?>
-                                    <img src="<?php echo htmlspecialchars($producto['imagen']); ?>" alt="Imagen del producto" style="max-width: 100px;">
+                                <?php if ($producto['imagen'] && file_exists(__DIR__ . '/../../uploads/' . $producto['imagen'])): ?>
+                                    <img src="../../uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="Imagen" style="max-width: 100px; height: auto;">
                                 <?php else: ?>
+                                    <img src="../../uploads/Nike_1985_cuadrado_rojo.webp" alt="">
                                     No disponible
-                                <?php endif; ?>
+                                <?php endif; ?>   
                             </td>
+
                             <td>
                                 <!-- Formulario para eliminar un producto del carrito -->
                                 <form action="eliminar_item.php" method="post" style="display:inline;">
