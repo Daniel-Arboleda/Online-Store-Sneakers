@@ -50,16 +50,16 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
                     <!-- <a class="dropdown-item" href="agregar_producto.php">Crear Producto</a> -->
                     <a class="dropdown-item" href="admin_productos.php">Crear/Ver/Editar Productos & Stock</a>
                     <!-- <a class="dropdown-item" href="ver_stock.php">Ver/Editar Stock</a> -->
-                    <a class="dropdown-item" href="admin_categorias.php">Categorías</a>
+                    <!-- <a class="dropdown-item" href="admin_categorias.php">Categorías</a> -->
                     
                     <!-- Gestión de Cupones -->
-                    <a class="dropdown-item" href="crear_cupon.php">Crear Cupón</a>
-                    <a class="dropdown-item" href="ver_cupones.php">Ver/Editar Cupones</a>
+                    <!-- <a class="dropdown-item" href="crear_cupon.php">Crear Cupón</a> -->
+                    <a class="dropdown-item" href="ver_cupones.php">Crear/Ver/Editar Cupones</a>
 
                     <!-- Gestión de Pedidos y Devoluciones -->
                     <a class="dropdown-item" href="admin_pedidos.php">Pedidos Pendientes</a>
                     <a class="dropdown-item" href="historial_pedidos.php">Historial de Pedidos</a>
-                    <a class="dropdown-item" href="devoluciones.php">Gestión de Devoluciones</a>
+                    <a class="dropdown-item" href="admin_devoluciones.php">Gestión de Devoluciones</a>
                 </div>
             </li>
 
