@@ -7,6 +7,36 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: login.php'); // Redirigir al formulario de login si no está autenticado
     exit();
 }
+
+$usuario_id = $_SESSION['user_id']; // ID del usuario logueado
+
+// Conexión a la base de datos
+require __DIR__ . '/../../config/conexion.php'; // Verifica que este archivo sea correcto
+
+// Inicializamos la variable para la cantidad de artículos
+$cantidad_articulos = 0;
+
+try {
+    // Consulta para contar la cantidad de artículos únicos en el carrito del usuario
+    $sql = "SELECT COUNT(DISTINCT producto_id) AS cantidad_articulos 
+            FROM carrito_item
+            WHERE carrito_id IN (
+                SELECT id FROM carrito WHERE usuario_id = ?
+            )";
+    $stmt = $mysqli->prepare($sql);
+    $stmt->bind_param('i', $usuario_id); // Usamos bind_param para mysqli si usas 's':'string y 'i':'integer'
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+
+    // Si se obtienen resultados, asignamos el valor
+    $cantidad_articulos = $data['cantidad_articulos'] ?? 0;
+} catch (Exception $e) {
+    // Manejo de errores
+    echo "Error al realizar la consulta: " . $e->getMessage();
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -40,7 +70,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
                 <div class="card text-white bg-secondary mb-3">
                     <div class="card-header">Mi Carrito</div>
                     <div class="card-body">
-                        <h5 class="card-title">3 Artículos</h5>
+                        <h5 class="card-title"><?php echo $cantidad_articulos; ?> Artículos</h5>
                         <p class="card-text">Revisa y gestiona los artículos en tu carrito.</p>
                         <a href="cart.php" class="btn btn-light">Ver carrito</a>
                     </div>
