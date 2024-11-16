@@ -5,7 +5,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-require 'conexion.php';
+require __DIR__ . '/../../config/conexion.php';
 
 if (!isset($_GET['pedido_id']) || empty($_GET['pedido_id'])) {
     echo "No se especificó un pedido válido.";
