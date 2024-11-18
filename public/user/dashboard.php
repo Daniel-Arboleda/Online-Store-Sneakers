@@ -13,6 +13,7 @@ $usuario_id = $_SESSION['user_id']; // ID del usuario logueado
 // Conexión a la base de datos
 require __DIR__ . '/../../config/conexion.php'; // Verifica que este archivo sea correcto
 
+
 // Inicializamos la variable para la cantidad de artículos
 $cantidad_articulos = 0;
 
@@ -37,6 +38,28 @@ try {
     exit();
 }
 
+
+// Inicializamos la variable para la cantidad de pedidos
+$cantidad_pedidos = 0;
+
+try {
+    // Consulta para contar la cantidad de pedidos del usuario
+    $sql_pedidos = "SELECT COUNT(*) AS cantidad_pedidos FROM pedidos WHERE usuario_id = ?";
+    $stmt_pedidos = $mysqli->prepare($sql_pedidos);
+    $stmt_pedidos->bind_param('i', $usuario_id);
+    $stmt_pedidos->execute();
+    $result_pedidos = $stmt_pedidos->get_result();
+    $data_pedidos = $result_pedidos->fetch_assoc();
+
+    // Si se obtienen resultados, asignamos el valor
+    $cantidad_pedidos = $data_pedidos['cantidad_pedidos'] ?? 0;
+} catch (Exception $e) {
+    // Manejo de errores
+    echo "Error al realizar la consulta de pedidos: " . $e->getMessage();
+    exit();
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -60,7 +83,7 @@ try {
                 <div class="card text-white bg-primary mb-3">
                     <div class="card-header">Mis Pedidos</div>
                     <div class="card-body">
-                        <h5 class="card-title">5 Pedidos</h5>
+                        <h5 class="card-title"><?php echo $cantidad_pedidos; ?> Pedidos</h5>
                         <p class="card-text">Consulta el estado de tus pedidos recientes.</p>
                         <a href="mis_pedidos.php" class="btn btn-light">Ver pedidos</a>
                     </div>
@@ -88,22 +111,7 @@ try {
             </div>
         </div>
         
-        <!-- Opciones de sesión en el encabezado -->
-        <!-- <div class="d-flex justify-content-end">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo htmlspecialchars($_SESSION['email']); ?>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="userMenu">
-                    <a class="dropdown-item" href="perfil.php">Mi perfil</a>
-                    <a class="dropdown-item" href="configuracion.php">Configuración</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="logout.php">Cerrar sesión</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
+      
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
