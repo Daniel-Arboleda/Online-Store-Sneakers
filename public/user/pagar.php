@@ -2,7 +2,6 @@
 
 <?php
 require __DIR__ . '/../../config/conexion.php';
-require_once __DIR__ . '/PagoController.php';
 
 session_start();
 
@@ -12,13 +11,11 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
-// Obtener el ID del usuario y validar su existencia en la sesión
 if (!isset($_SESSION['user_id'])) {
     die("ID de usuario no disponible en la sesión.");
 }
 $usuario_id = $_SESSION['user_id'];
 
-// Inicializar variables
 $total = 0;
 $codigo_descuento = isset($_POST['codigo_descuento']) ? $_POST['codigo_descuento'] : null;
 $descuento_aplicado = 0;
@@ -45,25 +42,36 @@ if ($stmt = $mysqli->prepare($sql)) {
 // Validar y aplicar el código de descuento si existe
 if ($codigo_descuento) {
     $sql = "SELECT porcentaje_descuento FROM cupones WHERE codigo = ? AND estado = 'activo'";
-    if ($stmt = $mysqli->prepare($sql)) {
-        $stmt->bind_param("s", $codigo_descuento);
-        $stmt->execute();
-        $stmt->bind_result($porcentaje_descuento);
-        if ($stmt->fetch()) {
-            $descuento_aplicado = ($porcentaje_descuento / 100) * $total;
-            $total -= $descuento_aplicado;
-        } else {
-            $_SESSION['mensaje_error'] = "Código de descuento inválido o inactivo.";
-        }
-        $stmt->close();
+    $stmt = $mysqli->prepare($sql);
+    $stmt->bind_param("s", $codigo_descuento);
+    $stmt->execute();
+    $stmt->bind_result($porcentaje_descuento);
+    if ($stmt->fetch()) {
+        $descuento_aplicado = ($porcentaje_descuento / 100) * $total;
+        $total -= $descuento_aplicado;
+    } else {
+        $_SESSION['mensaje_error'] = "Código de descuento inválido o inactivo.";
     }
+    $stmt->close();
 }
 
 // Iniciar transacción
 $mysqli->begin_transaction();
 
 try {
-    // Obtener la dirección del usuario usando el email almacenado en la sesión
+    // Obtener la dirección del usuario
+    // $sql = "SELECT direccion FROM usuarios WHERE id = ?";
+    // $stmt = $mysqli->prepare($sql);
+    // $stmt->bind_param("i", $usuario_id);
+    // $stmt->execute();
+    // $stmt->bind_result($direccion_envio);
+    // if (!$stmt->fetch() || !$direccion_envio) {
+    //     $stmt->close();
+    //     throw new Exception("No se encontró dirección para el usuario.");
+    // }
+    // $stmt->close();
+
+    // Obtener la dirección del usuario mediante el email que es identificador unico del usurio en usuarios y pasandole el email de la sesion para que es un dato validado
     $sql = "SELECT direccion FROM usuarios WHERE email = ?";
     $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("s", $_SESSION['email']);
@@ -87,8 +95,6 @@ try {
 
     // Insertar el pago
     $estado_pago = 'Pagado';
-    // $estado_pago = 'Fallido';
-    // $estado_pago = 'Pendiente';
     $metodo_pago = 'Tarjeta de crédito';
     $sql = "INSERT INTO pagos (factura_id, usuario_id, total, metodo_pago, estado_pago, fecha_pago) 
             VALUES (?, ?, ?, ?, ?, NOW())";
@@ -100,10 +106,11 @@ try {
     $stmt->close();
 
     // Simular pago exitoso
-    $pago_exitoso = true;
+    $pago_exitoso = true; // Este valor debería depender de un proceso real de pago
 
     // Actualizar estado del pago
     $estado_pago = $pago_exitoso ? 'Pagado' : 'Fallido';
+
     $sql = "UPDATE pagos SET estado_pago = ? WHERE factura_id = ?";
     $stmt = $mysqli->prepare($sql);
     $stmt->bind_param("si", $estado_pago, $factura_id);
@@ -141,7 +148,7 @@ try {
 } catch (Exception $e) {
     $mysqli->rollback();
     $_SESSION['mensaje_error'] = "Error durante el proceso de pago: " . $e->getMessage();
-    header('Location: error_pagar.php');
+    header('Location: error_pagar.php'); // Redirigir a página de error o mostrar mensaje
     exit();
 }
 
