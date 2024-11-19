@@ -59,17 +59,6 @@ if ($codigo_descuento) {
 $mysqli->begin_transaction();
 
 try {
-    // Obtener la dirección del usuario
-    // $sql = "SELECT direccion FROM usuarios WHERE id = ?";
-    // $stmt = $mysqli->prepare($sql);
-    // $stmt->bind_param("i", $usuario_id);
-    // $stmt->execute();
-    // $stmt->bind_result($direccion_envio);
-    // if (!$stmt->fetch() || !$direccion_envio) {
-    //     $stmt->close();
-    //     throw new Exception("No se encontró dirección para el usuario.");
-    // }
-    // $stmt->close();
 
     // Obtener la dirección del usuario mediante el email que es identificador unico del usurio en usuarios y pasandole el email de la sesion para que es un dato validado
     $sql = "SELECT direccion FROM usuarios WHERE email = ?";
@@ -95,6 +84,8 @@ try {
 
     // Insertar el pago
     $estado_pago = 'Pagado';
+    // $estado_pago = 'Pendiente';
+    // $estado_pago = 'Fallido';
     $metodo_pago = 'Tarjeta de crédito';
     $sql = "INSERT INTO pagos (factura_id, usuario_id, total, metodo_pago, estado_pago, fecha_pago) 
             VALUES (?, ?, ?, ?, ?, NOW())";
@@ -120,6 +111,50 @@ try {
     $stmt->close();
 
     if ($estado_pago === 'Pagado') {
+
+        // Insertar el pedido
+        $sql = "INSERT INTO pedidos (codigo_pedido, factura_id, usuario_id, total, direccion_envio, contacto_cliente, metodo_pago, estado, fecha)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+
+        // Generar un código de pedido único, por ejemplo, un UUID o un código basado en fecha y usuario
+        $codigo_pedido = 'PED' . strtoupper(uniqid('')); // Ejemplo de código de pedido único
+
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("siidsssss", $codigo_pedido, $factura_id, $usuario_id, $total, $direccion_envio, $contacto_cliente, $metodo_pago, $estado_pago);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error al crear el pedido.");
+        }
+        $pedido_id = $stmt->insert_id; // Obtener el ID del pedido recién creado
+        $stmt->close();
+        
+        // Volcar los productos del carrito a la tabla pedido_detalles
+        $sql = "SELECT ci.producto_id, ci.cantidad, ci.precio 
+            FROM carrito_item ci
+            INNER JOIN carrito c ON c.id = ci.carrito_id
+            WHERE c.usuario_id = ?";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $usuario_id);
+        $stmt->execute();
+        $stmt->bind_result($producto_id, $cantidad, $precio);
+
+        // Insertar los productos del carrito en la tabla pedido_detalles
+        $sql_detalle = "INSERT INTO pedido_detalles (pedido_id, producto_id, cantidad, precio_unitario) 
+                VALUES (?, ?, ?, ?)";
+        $stmt_insert = $mysqli->prepare($sql_detalle);
+
+        // Iterar sobre los productos del carrito y volcar cada uno en la tabla de detalles
+        while ($stmt->fetch()) {
+            $stmt_insert->bind_param("iiid", $pedido_id, $producto_id, $cantidad, $precio);
+            if (!$stmt_insert->execute()) {
+                throw new Exception("Error al insertar los detalles del pedido.");
+            }
+        }
+
+        $stmt->close();
+        $stmt_insert->close();
+
+
         // Vaciar el carrito y sus items
         $sql = "DELETE FROM carrito_item WHERE carrito_id IN (SELECT id FROM carrito WHERE usuario_id = ?)";
         $stmt = $mysqli->prepare($sql);
