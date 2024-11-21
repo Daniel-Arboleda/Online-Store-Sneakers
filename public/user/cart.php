@@ -1,143 +1,18 @@
+<!-- cart.php -->
+
+
 <?php
-session_start(); // Iniciar la sesión
+require __DIR__ . '/cart_logic.php';
 
-// Verificar si el usuario está autenticado
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    header('Location: login.html'); // Redirigir al formulario de login si no está autenticado
-    exit();
+// Asegúrate de que $productos_carrito esté definido
+if (!isset($productos_carrito)) {
+    $productos_carrito = [];
 }
 
-// Incluir el archivo de conexión a la base de datos
-// require 'conexion.php';
-require __DIR__ . '/../../config/conexion.php';
-
-
-// Obtener el ID del usuario de la sesión
-$usuario_id = $_SESSION['user_id']; // Asegúrate de usar el ID de usuario correcto aquí
-
-// Consultar los productos en el carrito del usuario
-$sql = "
-    SELECT ci.id AS item_id, p.nombre, p.descripcion, p.precio, ci.cantidad, p.imagen, p.id AS producto_id
-    FROM carrito c
-    INNER JOIN carrito_item ci ON c.id = ci.carrito_id
-    INNER JOIN productos p ON ci.producto_id = p.id
-    WHERE c.usuario_id = ?
-";
-
-if ($stmt = $mysqli->prepare($sql)) {
-    $stmt->bind_param("i", $usuario_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
-} else {
-    die("Error en la preparación de la consulta SQL: " . $mysqli->error);
-}
-
-// Guardar los resultados en una variable separada para renderizarlos después
-$productos_carrito = $result->fetch_all(MYSQLI_ASSOC);
-
-// Calcular el total del carrito
-$total_carrito = 0; // Variable para calcular el total del carrito
-foreach ($productos_carrito as $producto) {
-    $total_carrito += $producto['precio'] * $producto['cantidad']; // Sumar el precio por la cantidad
-}
-
-// Verificar si se ha enviado un código de descuento
-$total_con_descuento = $total_carrito; // Inicializar con el total sin descuento
-$descuento = 0;
-
-if (isset($_POST['codigo_descuento'])) {
-    $codigo_descuento = $_POST['codigo_descuento'];
-
-    // Consultar la base de datos para verificar si el código es válido
-    $sql = "SELECT * FROM cupones WHERE codigo = ? AND activo = 1 AND CURDATE() BETWEEN fecha_inicio AND fecha_fin";
-    if ($stmt = $mysqli->prepare($sql)) {
-        $stmt->bind_param("s", $codigo_descuento);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            // El cupón es válido, obtener los datos del cupón
-            $cupon = $result->fetch_assoc();
-            $tipo_descuento = $cupon['tipo_descuento'];
-            $valor_descuento = $cupon['valor'];
-            $productos_aplicables = $cupon['productos_aplicables']; // productos aplicables (si es relevante)
-
-            // Verificar si el cupón es aplicable a los productos del carrito
-            if (!empty($productos_aplicables)) {
-                $productos_aplicables = explode(',', $productos_aplicables);
-                $aplicable = false;
-
-                foreach ($productos_carrito as $producto) {
-                    if (in_array($producto['producto_id'], $productos_aplicables)) {
-                        $aplicable = true;
-                        break;
-                    }
-                }
-
-                if (!$aplicable) {
-                    echo "Este cupón no es válido para los productos en tu carrito.";
-                    exit();
-                }
-            }
-
-            // Calcular el descuento
-            if ($tipo_descuento === 'porcentaje') {
-                $descuento = ($total_carrito * $valor_descuento) / 100;
-            } elseif ($tipo_descuento === 'monto_fijo') {
-                $descuento = $valor_descuento;
-            }
-
-            // Restar el descuento al total
-            $total_con_descuento = $total_carrito - $descuento;
-            echo "¡Descuento Aplicado! Has ahorrado: $".number_format($descuento, 2);
-        } else {
-            echo "El código de descuento no es válido o ha expirado.";
-        }
-    } else {
-        echo "Error al verificar el código de descuento.";
-    }
-} 
-
-$mysqli->close();
-
-
-
-// Backend del botón de MercadoPago PHP
- 
-use MercadoPago\Client\Preference\PreferenceClient;
-use MercadoPago\MercadoPagoConfig;
-require __DIR__ . '/../../vendor/autoload.php';
-
-// MercadoPagoConfig::setAccessToken("TEST-1779176051186418-111023-ff56be2febaef0332da0e281eab8617b-2091124386");
-MercadoPagoConfig::setAccessToken("APP_USR-1500718036145790-111202-081e104f96ac7ab58de504020c288c4b-2088531771");
-// Son los datos que se se le envian al botón para ser reconocidos.
-$client = new PreferenceClient();
-    // $stmt->bind_param("i", $usuario_id);
-    
-
-// Preferenias para el botón, se puede agregar diferentes elementos, productos o servicios, con diversos elementos dentro.
-$preference =$client->create([
-    "items" => [
-        [
-            "id" => "DEP-001",
-            "title" => "Jordan 1",
-            "quantity" => 1,
-            "unit_price" => 100.00 
-        ],
-    ],
-    "player"=>[
-        // Correo del usuario de prueba
-        "email" => "do@do.co",
-        "email" => $_SESSION['user_id']
-    ],
-
-    // Datos para identificar el negocio.
-    "statement_descriptor" => "Tienda-Sneakers",
-    // Identificador para el pago que se esta realizado.
-    "external_reference" => "CDP001"
-]);     
+// Asigna $productos_carrito a $productos para el formulario
+$productos = $productos_carrito;
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -146,9 +21,8 @@ $preference =$client->create([
     <title>Carrito de Compras</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://sdk.mercadopago.com/js/v2">
-    </script>
-    <script type="text/javascript" src="js/mercadoPago.js" defer></script>
+    
+   
 </head>
 <body>
     <?php include 'menu.php'; ?>
@@ -175,7 +49,9 @@ $preference =$client->create([
                             <td><?php echo htmlspecialchars($producto['nombre']); ?></td>
                             <td><?php echo htmlspecialchars($producto['descripcion']); ?></td>
                             <td><?php echo htmlspecialchars($producto['precio']); ?></td>
-                            <td><?php echo htmlspecialchars($producto['cantidad']); ?></td>
+                            <td>
+                                <input type="number" class="cantidad-producto form-control" name="cantidad" id="cantidad" value="<?php echo htmlspecialchars($producto['cantidad']); ?>" min="1" max="99" readonly>
+                            </td>
                             <td>
                                 <?php if ($producto['imagen'] && file_exists(__DIR__ . '/../../uploads/' . $producto['imagen'])): ?>
                                     <img src="../../uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="Imagen" style="max-width: 100px; height: auto;">
@@ -223,36 +99,27 @@ $preference =$client->create([
             </div>
         <?php endif; ?>
 
+        
+        <!-- Botón para pagar -->
+        <button onclick="abrirFactura()">Proceder al Pago</button>
+
+        <script>
+        function abrirFactura() {
+            window.open('ver_factura.php', 'Factura', 'width=800,height=600,scrollbars=yes');
+        }
+        </script>
+
         <!-- Botón para pagar -->
         <!-- <form action="pagar.php" method="post">
             <button type="submit" class="btn btn-success mt-3">Proceder al Pago</button>
         </form> -->
 
-        <!-- Contenedor para renderizar el botón de MercadoPago -->
-        <div id="wallet_container">
-        </div>
-        <script>
-            const mp = new MercadoPago('APP_USR-83975ae8-8583-425d-a8bc-be789ddc1302', {
-                
-                locale: 'es-CO'
-            });
 
-            mp.bricks().create("wallet", "wallet_container", {
-                initialization: {
-                    // preferenceId: "<PREFERENCE_ID>",
-                    preferenceId: "<?php echo $preference->id; ?>",
-                    // redirectMode: 'blank'
-                    redirecMode: 'modal'
-                },
-                customization: {
-                    texts: {
-                        action: 'buy',
-                        valueProp: 'security_details'
-                    }
-                }
-            });
-        </script>
 
+        
+
+
+      
 
 
 
