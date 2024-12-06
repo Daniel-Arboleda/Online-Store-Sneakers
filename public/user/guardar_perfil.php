@@ -12,6 +12,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit();
 }
 
+$usuario_id = $_SESSION['user_id']; // Asegúrate de que este valor esté en la sesión
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
@@ -21,8 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_SESSION['email']; // Obtener el email del usuario logueado
 
     // Preparar y ejecutar la consulta SQL para actualizar el perfil del usuario
-    $sql = "INSERT INTO usuarios (email, nombre, apellido, fecha_nacimiento, direccion, telefono) 
-            VALUES (?, ?, ?, ?, ?, ?) 
+    $sql = "INSERT INTO usuarios (usuario_id, email, nombre, apellido, fecha_nacimiento, direccion, telefono) 
+            VALUES (?, ?, ?, ?, ?, ?, ?) 
             ON DUPLICATE KEY UPDATE 
             nombre = VALUES(nombre), 
             apellido = VALUES(apellido), 
@@ -31,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             telefono = VALUES(telefono)";
 
     if ($stmt = $mysqli->prepare($sql)) {
-        $stmt->bind_param("ssssss", $email, $nombre, $apellido, $fecha_nacimiento, $direccion, $telefono);
+        $stmt->bind_param("issssss", $usuario_id, $email, $nombre, $apellido, $fecha_nacimiento, $direccion, $telefono);
         if ($stmt->execute()) {
             header("Location: perfil.php?status=success&message=Perfil guardado exitosamente.");
         } else {
