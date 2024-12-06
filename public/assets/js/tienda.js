@@ -31,8 +31,11 @@ function highlightStars(productId, rating) {
 }
 
 function changeQuantity(change, productId, maxQuantity) {
+
     console.log(`changeQuantity - Inicio: change=${change}, productId=${productId}, maxQuantity=${maxQuantity}`);
+
     let quantityInput = document.getElementById(`quantity-${productId}`);
+
     if (!quantityInput) {
         console.error(`changeQuantity - Input de cantidad no encontrado: quantity-${productId}`);
         return;
@@ -40,6 +43,7 @@ function changeQuantity(change, productId, maxQuantity) {
 
     let currentQuantity = parseInt(quantityInput.value);
     let newQuantity = currentQuantity + change;
+    
     console.log(`changeQuantity - currentQuantity=${currentQuantity}, newQuantity=${newQuantity}`);
 
     if (newQuantity >= 1 && newQuantity <= maxQuantity) {

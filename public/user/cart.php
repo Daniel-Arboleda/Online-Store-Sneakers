@@ -100,13 +100,13 @@ $productos = $productos_carrito;
         <?php endif; ?>
 
         
-        <!-- Botón para pagar -->
-        <button onclick="abrirFactura()">Proceder al Pago</button>
+        <!-- Botón para pagar con estilos Bootstrap -->
+        <button class="btn btn-primary" onclick="abrirFactura()">Proceder al Pago</button>
 
         <script>
-        function abrirFactura() {
-            window.open('ver_factura.php', 'Factura', 'width=800,height=600,scrollbars=yes');
-        }
+            function abrirFactura() {
+                window.open('ver_factura.php', 'Factura', 'width=800,height=600,scrollbars=yes');
+            }
         </script>
 
         <!-- Botón para pagar -->

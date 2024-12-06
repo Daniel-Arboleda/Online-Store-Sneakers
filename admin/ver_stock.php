@@ -20,15 +20,15 @@ $result = $mysqli->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock de Productos Sneakers</title>
+    <title>Stock</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
+<body class="bg-dark text-warning">
     <?php include 'menu_admin.php'; ?>
 
     <div class="container mt-5">
         <h2>Stock de Productos</h2>
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped text-warning">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -49,17 +49,25 @@ $result = $mysqli->query($sql);
                             <td><?php echo htmlspecialchars($row['descripcion']); ?></td>
                             <td><?php echo htmlspecialchars($row['precio']); ?></td>
                             <td><?php echo htmlspecialchars($row['cantidad']); ?></td>
+
                             <td>
-                                <?php if ($row['imagen'] && file_exists(__DIR__ . '/../uploads/' . $row['imagen'])): ?>
-                                    <img src="uploads/<?php echo htmlspecialchars($row['imagen']); ?>" alt="Imagen" style="max-width: 100px;">
-                                <?php else: ?>
-                                    No disponible
-                                <?php endif; ?>
+                                <?php
+                                if ($row['imagen'] && file_exists(__DIR__ . '/../uploads/' . $row['imagen'])) {
+                                    echo '<img src="../uploads/' . htmlspecialchars($row['imagen']) . '" alt="Imagen" style="max-width: 100px;">';
+                                } else {
+                                    // echo 'No disponible';
+                                    echo '<img src="../uploads/TimeMaster_Logo _square.png" alt="Imagen predeterminada" style="max-width: 100px;">';
+
+                                }
+                                ?>
                             </td>
+
+
+
                             <td>
                                 <form action="eliminar_producto.php" method="post">
                                     <input type="hidden" name="producto_id" value="<?php echo $row['id']; ?>">
-                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
                                 </form>
                             </td>
                         </tr>
