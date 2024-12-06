@@ -17,9 +17,12 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-warning text-dark">
     <?php include 'menu_out.php'; ?>
     <div class="container login-container">
+        <!-- Agregar el logo -->
+        <img src="../uploads/Logo-sneaker.png" alt="Logo Sneakers" class="logo" width="200">
+
         <div class="login-form">
             <h2 class="mb-4">Iniciar Sesión</h2>
             <form method="POST" action="../auth/login_user.php">
