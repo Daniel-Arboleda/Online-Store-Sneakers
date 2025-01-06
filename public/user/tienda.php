@@ -65,7 +65,7 @@ $result = $mysqli->query($sql);
 <body>
     <!-- Menú de navegación -->
     <?php include 'menu.php'; ?>
-    <h2 class="text-center mt-4">Tu Tienda</h2>
+    <h1 class="text-center mt-4">Tu Tienda</h1>
 
     <div class="container mt-5">
         <h2 class="text-center mb-4">Productos Disponibles</h2>

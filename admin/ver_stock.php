@@ -56,7 +56,7 @@ $result = $mysqli->query($sql);
                                     echo '<img src="../uploads/' . htmlspecialchars($row['imagen']) . '" alt="Imagen" style="max-width: 100px;">';
                                 } else {
                                     // echo 'No disponible';
-                                    echo '<img src="../uploads/TimeMaster_Logo _square.png" alt="Imagen predeterminada" style="max-width: 100px;">';
+                                    echo '<img src="../uploads/Nike_1985_cuadrado_rojo.webp" alt="Imagen predeterminada" style="max-width: 100px;">';
 
                                 }
                                 ?>
