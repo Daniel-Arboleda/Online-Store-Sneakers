@@ -16,9 +16,11 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-warning text-dark">
     <?php include 'menu_out.php'; ?>
     <div class="container form-container">
+        <!-- Agregar el logo -->
+        <img src="../uploads/Logo-sneaker.png" alt="Logo Sneakers" class="logo" width="200">
         <h2 class="mb-4">Crear Nuevo Usuario</h2>
         <form method="POST" action="../auth/create_user.php">
             <div class="form-group">
