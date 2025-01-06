@@ -55,7 +55,7 @@ $usuarioEmail = $isLoggedIn ? $_SESSION['email'] : '';
     <!-- Usuario y búsqueda -->
     <div class="d-flex align-items-center">
         <?php if ($isLoggedIn): ?>
-            <p class="alert alert-warning mb-0 mr-3"> Usuario: <?php echo htmlspecialchars($usuarioEmail); ?>!</p>
+            <p class="alert alert-warning mb-0 mr-3"> Usuario: <?php echo htmlspecialchars($usuarioEmail); ?></p>
         <?php else: ?>
             <p class="alert alert-warning mb-0 mr-3"> No has iniciado sesión.</p>
         <?php endif; ?>
